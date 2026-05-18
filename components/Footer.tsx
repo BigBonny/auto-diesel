@@ -87,13 +87,9 @@ export default function Footer() {
 
             {/* Contact */}
             <div className="space-y-3 mb-6">
-              <a href="tel:+33388522952" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
-                <Phone className="w-5 h-5 text-red-500" />
-                <span>+33 3 88 52 29 52</span>
-              </a>
-              <a href="mailto:contact@auto-diesels.com" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
+              <a href="mailto:info@www.auto-diesels.com" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
                 <Mail className="w-5 h-5 text-red-500" />
-                <span>contact@auto-diesels.com</span>
+                <span>info@www.auto-diesels.com</span>
               </a>
               <div className="flex items-center gap-3 text-gray-400">
                 <MapPin className="w-5 h-5 text-red-500" />

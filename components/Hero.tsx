@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, Zap, Shield, Clock, Award, ChevronRight, Play } from "lucide-react";
+import { ArrowRight, Zap, Shield, Clock, Award } from "lucide-react";
 
 const stats = [
   { value: "50K+", label: "Produits vendus", icon: Award },
@@ -74,18 +74,6 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-red-700 to-red-800 translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
             </a>
             
-            <a
-              href="tel:+33388522952"
-              className="group flex items-center gap-3 px-8 py-4 bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-red-500/50 text-white font-semibold rounded-xl transition-all duration-300 hover:bg-gray-800"
-            >
-              <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center group-hover:bg-red-500/30 transition-colors">
-                <Play className="w-4 h-4 text-red-500 fill-current" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs text-gray-400">Conseil gratuit</p>
-                <p className="text-sm">03 88 52 29 52</p>
-              </div>
-            </a>
           </div>
 
           {/* Stats */}

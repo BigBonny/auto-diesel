@@ -63,10 +63,10 @@ export default function About() {
             </div>
 
             <a
-              href="tel:+33388522952"
+              href="mailto:info@www.auto-diesels.com"
               className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-red-500/25"
             >
-              <Phone className="w-5 h-5" />
+              <Mail className="w-5 h-5" />
               Nous contacter
             </a>
           </div>
@@ -101,17 +101,11 @@ export default function About() {
             <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700">
               <h3 className="text-white font-bold text-lg mb-4">Nous contacter</h3>
               <div className="space-y-3">
-                <a href="tel:+33388522952" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
-                  <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-red-500" />
-                  </div>
-                  <span>+33 3 88 52 29 52</span>
-                </a>
-                <a href="mailto:contact@auto-diesels.com" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
+                <a href="mailto:info@www.auto-diesels.com" className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
                   <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
                     <Mail className="w-5 h-5 text-red-500" />
                   </div>
-                  <span>contact@auto-diesels.com</span>
+                  <span>info@www.auto-diesels.com</span>
                 </a>
                 <div className="flex items-center gap-3 text-gray-400">
                   <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
