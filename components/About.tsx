@@ -16,7 +16,7 @@ export default function About() {
         </p>
         <a
           href="mailto:info@www.auto-diesels.com"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
         >
           <Mail className="w-4 h-4" />
           Nous contacter

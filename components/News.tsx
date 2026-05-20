@@ -15,7 +15,7 @@ export default function News() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-gray-900">Actualités & Conseils</h2>
-          <a href="#" className="text-red-600 font-medium flex items-center gap-1 hover:gap-2 transition-all">
+          <a href="#" className="text-green-600 font-medium flex items-center gap-1 hover:gap-2 transition-all">
             Voir tout <ChevronRight className="w-4 h-4" />
           </a>
         </div>
@@ -25,10 +25,10 @@ export default function News() {
             <a
               key={article.id}
               href="#"
-              className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-red-300 hover:shadow-sm transition-all"
+              className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-sm transition-all"
             >
               <div>
-                <span className="text-xs font-medium text-red-600 uppercase">{article.category}</span>
+                <span className="text-xs font-medium text-green-600 uppercase">{article.category}</span>
                 <h3 className="font-medium text-gray-900 mt-1">{article.title}</h3>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />

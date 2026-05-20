@@ -17,7 +17,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-1 mb-4">
               <span className="text-lg font-bold">AUTO</span>
-              <span className="text-lg font-bold text-red-500">DIESELS</span>
+              <span className="text-lg font-bold text-green-400">DIESELS</span>
             </div>
             <p className="text-gray-400 text-sm mb-4">
               La marketplace du turbo depuis 2009.

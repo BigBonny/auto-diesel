@@ -36,7 +36,7 @@ export default function Header() {
           {/* Logo */}
           <a href="#" className="flex items-center gap-2">
             <span className="text-xl font-bold text-gray-900">AUTO</span>
-            <span className="text-xl font-bold text-red-600">DIESELS</span>
+            <span className="text-xl font-bold text-green-600">DIESELS</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -62,7 +62,7 @@ export default function Header() {
             </button>
             <button className="relative p-2 text-gray-600 hover:text-gray-900 transition-colors">
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
                 0
               </span>
             </button>
