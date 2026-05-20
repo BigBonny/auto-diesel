@@ -1,55 +1,92 @@
 "use client";
 
-import { Mail } from "lucide-react";
+import { Mail, CheckCircle } from "lucide-react";
 
 const stats = [
   { value: "15+", label: "Années d'expérience" },
   { value: "50K+", label: "Produits vendus" },
   { value: "30K+", label: "Clients satisfaits" },
+  { value: "24h", label: "Délai expédition" },
+];
+
+const strengths = [
+  "Reconditionnement professionnel sur banc de contrôle",
+  "Pièces garanties 2 ans toutes marques",
+  "Livraison express France & Europe",
+  "Conseils techniques par nos spécialistes",
 ];
 
 export default function About() {
   return (
-    <section id="about" className="py-16 bg-white overflow-hidden">
+    <section id="about" className="py-20 bg-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Image */}
-          <div className="relative rounded-2xl overflow-hidden shadow-xl h-72 sm:h-96">
-            <img
-              src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=900&q=80"
-              alt="Atelier mécanique"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
-            {/* Stats overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 flex justify-around">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <p className="text-2xl font-bold text-white">{stat.value}</p>
-                  <p className="text-xs text-gray-300">{stat.label}</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left: image stack */}
+          <div className="relative">
+            {/* Main image */}
+            <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
+              <img
+                src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=900&q=85"
+                alt="Atelier mécanique"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Floating secondary image */}
+            <div className="absolute -bottom-6 -right-6 w-40 h-40 sm:w-52 sm:h-52 rounded-2xl overflow-hidden shadow-2xl border-4 border-white hidden sm:block">
+              <img
+                src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=400&q=80"
+                alt="Turbo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Stats card overlay */}
+            <div className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl p-4 hidden lg:block border border-gray-100">
+              {stats.map((s) => (
+                <div key={s.label} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                  <span className="text-xl font-black text-green-600">{s.value}</span>
+                  <span className="text-xs text-gray-500 leading-tight">{s.label}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Content */}
-          <div>
-            <p className="text-green-600 font-semibold text-sm uppercase tracking-wider mb-3">À propos</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Euro Système Injection
+          {/* Right: content */}
+          <div className="lg:pl-6">
+            <p className="text-green-600 font-semibold text-sm uppercase tracking-widest mb-3">À propos</p>
+            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 leading-tight mb-5">
+              Euro Système<br />
+              <span className="text-green-600">Injection</span>
             </h2>
-            <p className="text-gray-600 mb-4 leading-relaxed">
-              Spécialisés dans l'entretien, la réparation et le reconditionnement des systèmes
-              d'injection pour véhicules toutes marques. Notre mission est d'offrir à nos clients
-              des solutions fiables et durables, en associant expertise technique et pièces de qualité.
+            <p className="text-gray-600 text-lg leading-relaxed mb-6">
+              Spécialistes de l'injection diesel depuis plus de 15 ans. Nous reconditionnons, 
+              testons et garantissons chaque pièce pour vous offrir une alternative fiable et 
+              économique aux pièces neuves.
             </p>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              Basés à Strasbourg, nous livrons partout en France et en Europe avec des délais
-              d'expédition parmi les plus rapides du secteur.
-            </p>
+
+            {/* Strengths */}
+            <ul className="space-y-3 mb-8">
+              {strengths.map((s) => (
+                <li key={s} className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">{s}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Stats row for mobile */}
+            <div className="grid grid-cols-4 gap-3 mb-8 lg:hidden">
+              {stats.map((s) => (
+                <div key={s.label} className="text-center bg-white rounded-xl p-3 border border-gray-100">
+                  <p className="text-xl font-black text-green-600">{s.value}</p>
+                  <p className="text-[10px] text-gray-500 leading-tight">{s.label}</p>
+                </div>
+              ))}
+            </div>
+
             <a
               href="mailto:info@www.auto-diesels.com"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-green-600/25 hover:shadow-green-600/40"
             >
               <Mail className="w-4 h-4" />
               Nous contacter
