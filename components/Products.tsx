@@ -1,118 +1,203 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingCart, ArrowRight, Eye } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const categories = [
-  { id: "all", label: "Tout voir" },
-  { id: "turbos", label: "Turbos" },
-  { id: "injecteurs", label: "Injecteurs" },
-];
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Box, Button, Card, CardContent, CardMedia, Chip, Container,
+  Typography, Stack, IconButton
+} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import VerifiedIcon from "@mui/icons-material/Verified";
 
 const products = [
-  { id: 1, name: "Turbo 1.6 HDI 110 CV", ref: "753420-5006S", price: 210, original: 450, brand: "Peugeot", discount: 53, category: "turbos", image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=500&q=80", stock: true },
-  { id: 2, name: "Turbo 1.9 DCI 120 CV", ref: "708639-5010S", price: 200, original: 420, brand: "Renault", discount: 52, category: "turbos", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&q=80", stock: true },
-  { id: 3, name: "Turbo 2.0 TDI 140 CV", ref: "724930-5009S", price: 210, original: 480, brand: "Audi", discount: 56, category: "turbos", image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&q=80", stock: true },
-  { id: 4, name: "Turbo 320d 163 CV", ref: "49135-05671", price: 320, original: 680, brand: "BMW", discount: 53, category: "turbos", image: "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=500&q=80", stock: true },
-  { id: 5, name: "Turbo 2.0 TDI 136 CV", ref: "724930-5010S", price: 210, original: 450, brand: "VW", discount: 53, category: "turbos", image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=80", stock: false },
-  { id: 6, name: "Turbo 1.6 HDi 90 CV", ref: "49173-07508", price: 210, original: 420, brand: "Peugeot", discount: 50, category: "turbos", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=500&q=80", stock: true },
-  { id: 7, name: "Injecteur HDi 136 CV", ref: "756047-5005S", price: 230, original: 490, brand: "Peugeot", discount: 53, category: "injecteurs", image: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=500&q=80", stock: true },
-  { id: 8, name: "Injecteur Panamera 500 CV", ref: "49389-01310", price: 2106, original: 3500, brand: "Porsche", discount: 40, category: "injecteurs", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500&q=80", stock: true },
+  { id: 1, name: "Turbo 1.6 HDI 110 CV",     ref: "753420-5006S", price: 210, original: 450, brand: "Peugeot", discount: 53, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=600&q=80", featured: true },
+  { id: 2, name: "Turbo 1.9 DCI 120 CV",      ref: "708639-5010S", price: 200, original: 420, brand: "Renault", discount: 52, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" },
+  { id: 3, name: "Turbo 2.0 TDI 140 CV",      ref: "724930-5009S", price: 210, original: 480, brand: "Audi",    discount: 56, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80" },
+  { id: 4, name: "Turbo 320d 163 CV",          ref: "49135-05671",  price: 320, original: 680, brand: "BMW",     discount: 53, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80" },
+  { id: 5, name: "Turbo 2.0 TDI 136 CV",      ref: "724930-5010S", price: 210, original: 450, brand: "VW",      discount: 53, cat: "turbos",     stock: false, img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80" },
+  { id: 6, name: "Turbo 1.6 HDi 90 CV",       ref: "49173-07508",  price: 185, original: 420, brand: "Peugeot", discount: 56, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" },
+  { id: 7, name: "Injecteur HDi 136 CV",       ref: "756047-5005S", price: 230, original: 490, brand: "Peugeot", discount: 53, cat: "injecteurs", stock: true,  img: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80" },
+  { id: 8, name: "Injecteur Panamera",        ref: "49389-01310",  price: 2106,original:3500, brand: "Porsche", discount: 40, cat: "injecteurs", stock: true,  img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80" },
+];
+
+const cats = [
+  { id: "all",        label: "Tout" },
+  { id: "turbos",     label: "Turbos" },
+  { id: "injecteurs", label: "Injecteurs" },
 ];
 
 export default function Products() {
   const [active, setActive] = useState("all");
-
-  const filtered = products.filter((p) => active === "all" || p.category === active);
+  const filtered = products.filter((p) => active === "all" || p.cat === active);
 
   return (
-    <section id="products" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Box component="section" id="products" sx={{ bgcolor: "white", py: { xs: 10, md: 16 }, position: "relative", overflow: "hidden" }}>
+      {/* Decorative bg */}
+      <Box sx={{ position: "absolute", top: "10%", left: "-10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(34,197,94,0.08), transparent 70%)", pointerEvents: "none" }} />
+
+      <Container maxWidth="xl" sx={{ position: "relative" }}>
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
-          <div>
-            <p className="text-green-600 text-sm font-semibold uppercase tracking-wider mb-1">Catalogue</p>
-            <h2 className="relative inline-block text-3xl sm:text-4xl font-black text-gray-900">
-              Nos produits
-              {/* Hand-drawn underline */}
-              <svg className="absolute -bottom-2 left-0 w-full overflow-visible pointer-events-none" height="8" viewBox="0 0 160 8" preserveAspectRatio="none" fill="none">
-                <path d="M2 6 Q40 2 80 5 Q120 8 158 3" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"/>
-              </svg>
-            </h2>
-          </div>
-          <div className="flex gap-2 bg-white rounded-xl border border-gray-200 p-1">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActive(cat.id)}
-                className={cn(
-                  "px-4 py-2 rounded-lg text-sm font-semibold transition-all",
-                  active === cat.id ? "bg-green-600 text-white shadow-md" : "text-gray-600 hover:text-gray-900"
-                )}
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, alignItems: { lg: "flex-end" }, justifyContent: "space-between", gap: 4, mb: { xs: 6, md: 10 } }}>
+          <Box sx={{ maxWidth: 720 }}>
+            <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 3 }}>
+              <Box sx={{ width: 40, height: 1, bgcolor: "#16a34a" }} />
+              <Typography sx={{ fontSize: "0.75rem", fontWeight: 700, color: "#16a34a", letterSpacing: "0.15em", textTransform: "uppercase" }}>Catalogue</Typography>
+            </Stack>
+            <Typography variant="h2" sx={{ fontSize: { xs: "2.5rem", md: "4rem", lg: "5rem" }, fontWeight: 900, lineHeight: 1.0, color: "#0f172a", letterSpacing: "-0.03em", mb: 2 }}>
+              Nos pièces les plus{" "}
+              <Box component="span" sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 400, color: "#16a34a" }}>
+                demandées
+              </Box>
+            </Typography>
+            <Typography sx={{ color: "text.secondary", fontSize: "1.05rem", lineHeight: 1.7, maxWidth: 540 }}>
+              Sélection des best-sellers de notre catalogue de 50 000+ références.
+              Toutes nos pièces sont testées sur banc et garanties 2 ans.
+            </Typography>
+          </Box>
+
+          {/* Category pills */}
+          <Stack direction="row" spacing={1} sx={{ bgcolor: "#f8fafc", borderRadius: 99, p: 0.75, border: "1px solid #e2e8f0" }}>
+            {cats.map((c) => (
+              <Box
+                key={c.id}
+                onClick={() => setActive(c.id)}
+                sx={{
+                  px: 2.5, py: 1.25, borderRadius: 99,
+                  fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", userSelect: "none",
+                  color: active === c.id ? "white" : "#475569",
+                  bgcolor: active === c.id ? "#0f172a" : "transparent",
+                  transition: "all 0.25s",
+                  "&:hover": { color: active === c.id ? "white" : "#0f172a" },
+                }}
               >
-                {cat.label}
-              </button>
+                {c.label}
+              </Box>
             ))}
-          </div>
-        </div>
+          </Stack>
+        </Box>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filtered.map((product) => (
-            <div key={product.id} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-300">
-              {/* Image */}
-              <div className="relative overflow-hidden aspect-[4/3] bg-gray-100">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                {/* Discount badge */}
-                <div className="absolute top-3 left-3 bg-green-600 text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-lg">
-                  -{product.discount}%
-                </div>
-                {/* Stock */}
-                {!product.stock && (
-                  <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded-lg">
-                    Sur commande
-                  </div>
-                )}
-                {/* Hover overlay actions */}
-                <div className="absolute inset-x-3 bottom-3 flex gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-200">
-                  <button className="flex-1 py-2 bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-lg flex items-center justify-center gap-1 hover:bg-white transition-colors">
-                    <Eye className="w-3.5 h-3.5" /> Aperçu
-                  </button>
-                </div>
-              </div>
+        {/* Product grid */}
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }, gap: 3 }}>
+          <AnimatePresence mode="popLayout">
+            {filtered.map((p, i) => (
+              <motion.div
+                key={p.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
+              >
+                <Card
+                  elevation={0}
+                  sx={{
+                    height: "100%", borderRadius: 4, overflow: "hidden",
+                    bgcolor: "#fafaf9", border: "1px solid transparent",
+                    transition: "all 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+                    cursor: "pointer",
+                    "&:hover": {
+                      borderColor: "#dcfce7",
+                      boxShadow: "0 24px 60px rgba(20,83,45,0.12)",
+                      transform: "translateY(-6px)",
+                      bgcolor: "white",
+                    },
+                    "&:hover .product-img": { transform: "scale(1.08) rotate(-2deg)" },
+                    "&:hover .product-cta": { bgcolor: "#16a34a" },
+                  }}
+                >
+                  {/* Image area */}
+                  <Box sx={{ position: "relative", aspectRatio: "1", overflow: "hidden", bgcolor: "#f1f5f9" }}>
+                    <CardMedia
+                      component="img"
+                      image={p.img}
+                      alt={p.name}
+                      className="product-img"
+                      sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)" }}
+                    />
+                    {/* Top chips row */}
+                    <Stack direction="row" sx={{ position: "absolute", top: 12, left: 12, right: 12, justifyContent: "space-between" }}>
+                      <Chip
+                        label={`−${p.discount}%`}
+                        size="small"
+                        icon={<LocalOfferIcon sx={{ fontSize: "0.85rem !important" }} />}
+                        sx={{ bgcolor: "#0f172a", color: "white", fontWeight: 900, fontSize: "0.72rem", height: 26 }}
+                      />
+                      <IconButton size="small" sx={{ bgcolor: "white", width: 32, height: 32, "&:hover": { bgcolor: "white", color: "#ef4444" } }}>
+                        <FavoriteBorderIcon sx={{ fontSize: 16 }} />
+                      </IconButton>
+                    </Stack>
+                    {!p.stock && (
+                      <Chip label="Sur commande" size="small" sx={{ position: "absolute", bottom: 12, left: 12, bgcolor: "rgba(245,158,11,0.95)", color: "white", fontWeight: 700, fontSize: "0.68rem", height: 22 }} />
+                    )}
+                  </Box>
 
-              {/* Content */}
-              <div className="p-4">
-                <p className="text-xs text-gray-400 font-mono mb-1">{product.ref}</p>
-                <h3 className="text-sm font-bold text-gray-900 mb-0.5 line-clamp-1">{product.name}</h3>
-                <p className="text-xs text-green-700 font-semibold bg-green-50 inline-block px-2 py-0.5 rounded-full mb-3">{product.brand}</p>
-                <div className="flex items-baseline gap-2 mb-3">
-                  <span className="text-2xl font-black text-gray-900">{product.price} €</span>
-                  <span className="text-sm text-gray-400 line-through">{product.original} €</span>
-                </div>
-                <button className="w-full py-2.5 bg-gray-900 hover:bg-green-600 text-white text-sm font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 group/btn">
-                  <ShoppingCart className="w-4 h-4" />
-                  Ajouter au panier
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+                  <CardContent sx={{ p: 2.5 }}>
+                    <Stack direction="row" sx={{ alignItems: "center", gap: 1, mb: 1 }}>
+                      <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: p.stock ? "#16a34a" : "#f59e0b" }} />
+                      <Typography sx={{ fontSize: "0.7rem", color: "#475569", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>{p.brand}</Typography>
+                      <Typography sx={{ fontSize: "0.7rem", color: "#cbd5e1" }}>•</Typography>
+                      <Typography sx={{ fontSize: "0.7rem", fontFamily: "monospace", color: "#94a3b8" }}>{p.ref}</Typography>
+                    </Stack>
 
-        {/* CTA */}
-        <div className="text-center mt-12">
-          <a href="#" className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-green-600 text-white font-bold rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg hover:shadow-green-600/30">
-            Voir tout le catalogue
-            <ArrowRight className="w-5 h-5" />
-          </a>
-        </div>
-      </div>
-    </section>
+                    <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: "1.25rem", color: "#0f172a", lineHeight: 1.2, mb: 1.5, fontWeight: 400 }}>
+                      {p.name}
+                    </Typography>
+
+                    <Stack direction="row" sx={{ alignItems: "baseline", justifyContent: "space-between", mb: 2 }}>
+                      <Stack direction="row" sx={{ alignItems: "baseline", gap: 1 }}>
+                        <Typography sx={{ fontSize: "1.5rem", fontWeight: 900, color: "#0f172a", lineHeight: 1 }}>{p.price} €</Typography>
+                        <Typography sx={{ fontSize: "0.8rem", color: "#94a3b8", textDecoration: "line-through" }}>{p.original} €</Typography>
+                      </Stack>
+                      <Stack direction="row" sx={{ alignItems: "center", gap: 0.5, color: "#16a34a" }}>
+                        <VerifiedIcon sx={{ fontSize: 13 }} />
+                        <Typography sx={{ fontSize: "0.68rem", fontWeight: 700 }}>2 ans</Typography>
+                      </Stack>
+                    </Stack>
+
+                    <Button
+                      className="product-cta"
+                      variant="contained"
+                      fullWidth
+                      endIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
+                      sx={{
+                        bgcolor: "#0f172a", color: "white",
+                        fontWeight: 700, fontSize: "0.8rem", borderRadius: 99, py: 1.25,
+                        transition: "background-color 0.25s",
+                      }}
+                    >
+                      Voir le produit
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </Box>
+
+        {/* Bottom CTA */}
+        <Box sx={{ textAlign: "center", mt: { xs: 6, md: 10 } }}>
+          <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: { xs: "1.5rem", md: "2.25rem" }, color: "#0f172a", mb: 2 }}>
+            Plus de 50 000 références dans notre catalogue
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            endIcon={<ArrowOutwardIcon />}
+            sx={{
+              bgcolor: "#0f172a", color: "white",
+              fontWeight: 800, px: 4.5, py: 2, borderRadius: 99, fontSize: "0.95rem",
+              boxShadow: "0 12px 28px rgba(15,23,42,0.25)",
+              "&:hover": { bgcolor: "#16a34a", transform: "translateY(-2px)", boxShadow: "0 16px 40px rgba(22,163,74,0.4)" },
+              transition: "all 0.3s",
+            }}
+          >
+            Explorer le catalogue complet
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 }

@@ -1,111 +1,197 @@
 "use client";
 
-import { Mail, CheckCircle } from "lucide-react";
-
-const stats = [
-  { value: "15+", label: "Années d'expérience" },
-  { value: "50K+", label: "Produits vendus" },
-  { value: "30K+", label: "Clients satisfaits" },
-  { value: "24h", label: "Délai expédition" },
-];
+import { motion } from "framer-motion";
+import { Box, Button, Container, Stack, Typography, Paper } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import PhoneIcon from "@mui/icons-material/Phone";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 const strengths = [
-  "Reconditionnement professionnel sur banc de contrôle",
-  "Pièces garanties 2 ans toutes marques",
-  "Livraison express France & Europe",
-  "Conseils techniques par nos spécialistes",
+  { title: "Reconditionnement professionnel",  desc: "Chaque pièce démontée, nettoyée, remplacée et testée par nos techniciens." },
+  { title: "Tests sur banc de contrôle",       desc: "Calibration et validation des performances avant emballage." },
+  { title: "Garantie 2 ans toutes marques",    desc: "Couverture totale sans conditions, échange ou remboursement." },
+  { title: "Expédition sécurisée 24h",         desc: "Emballage anti-choc, suivi en temps réel France & Europe." },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="py-20 bg-gray-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <Box component="section" id="about" sx={{ bgcolor: "#fafaf9", py: { xs: 12, md: 18 }, position: "relative", overflow: "hidden" }}>
+      {/* Decorative bg */}
+      <Box sx={{ position: "absolute", top: "20%", right: "-15%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(34,197,94,0.08), transparent 70%)", pointerEvents: "none" }} />
 
-          {/* Left: image stack */}
-          <div className="relative">
-            {/* Main image */}
-            <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
-              <img
-                src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=900&q=85"
-                alt="Atelier mécanique"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Floating secondary image */}
-            <div className="absolute -bottom-6 -right-6 w-40 h-40 sm:w-52 sm:h-52 rounded-2xl overflow-hidden shadow-2xl border-4 border-white hidden sm:block">
-              <img
-                src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=400&q=80"
-                alt="Turbo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Stats card overlay */}
-            <div className="absolute -left-4 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl p-4 hidden lg:block border border-gray-100">
-              {stats.map((s) => (
-                <div key={s.label} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                  <span className="text-xl font-black text-green-600">{s.value}</span>
-                  <span className="text-xs text-gray-500 leading-tight">{s.label}</span>
-                </div>
+      <Container maxWidth="xl" sx={{ position: "relative" }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" }, gap: { xs: 8, lg: 12 }, alignItems: "center" }}>
+
+          {/* LEFT: image collage */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            <Box sx={{ position: "relative" }}>
+              {/* Main image */}
+              <Paper
+                elevation={0}
+                sx={{
+                  position: "relative",
+                  borderRadius: 5,
+                  overflow: "hidden",
+                  aspectRatio: "4/5",
+                  boxShadow: "0 30px 60px rgba(15,23,42,0.12)",
+                }}
+              >
+                <Box
+                  component="img"
+                  src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=900&q=90"
+                  alt="Atelier"
+                  sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <Box sx={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(15,23,42,0.6) 100%)" }} />
+                {/* Quote overlay */}
+                <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: 4, color: "white" }}>
+                  <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: { xs: "1.4rem", md: "1.8rem" }, lineHeight: 1.3, mb: 2 }}>
+                    "Chaque pièce qui sort de notre atelier est testée comme si nous allions la monter sur notre propre voiture."
+                  </Typography>
+                  <Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>
+                    — L'équipe Euro Système Injection
+                  </Typography>
+                </Box>
+              </Paper>
+
+              {/* Floating badge top-left */}
+              <Paper
+                elevation={0}
+                sx={{
+                  position: "absolute",
+                  top: -24, left: -24,
+                  bgcolor: "#0f172a",
+                  color: "white",
+                  borderRadius: 4,
+                  px: 3, py: 2.5,
+                  boxShadow: "0 20px 40px rgba(15,23,42,0.25)",
+                  display: { xs: "none", sm: "block" },
+                }}
+              >
+                <Typography sx={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.5)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Depuis</Typography>
+                <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: "3rem", fontWeight: 400, color: "#4ade80", lineHeight: 1, my: 0.5 }}>2010</Typography>
+                <Typography sx={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.7)" }}>15 ans d'expertise</Typography>
+              </Paper>
+
+              {/* Floating badge bottom-right */}
+              <Paper
+                elevation={0}
+                sx={{
+                  position: "absolute",
+                  bottom: -28, right: -28,
+                  bgcolor: "white",
+                  borderRadius: 4,
+                  px: 3, py: 2.5,
+                  border: "1px solid #e2e8f0",
+                  boxShadow: "0 20px 40px rgba(15,23,42,0.08)",
+                  display: { xs: "none", sm: "block" },
+                  minWidth: 200,
+                }}
+              >
+                <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 1 }}>
+                  <Box sx={{ display: "flex", gap: 0.25 }}>
+                    {[...Array(5)].map((_, i) => (
+                      <Box key={i} sx={{ width: 16, height: 16, bgcolor: "#facc15", clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }} />
+                    ))}
+                  </Box>
+                  <Typography sx={{ fontWeight: 900, fontSize: "0.95rem", color: "#0f172a" }}>4.9/5</Typography>
+                </Stack>
+                <Typography sx={{ fontSize: "0.78rem", color: "text.secondary" }}>2 400+ avis vérifiés</Typography>
+              </Paper>
+            </Box>
+          </motion.div>
+
+          {/* RIGHT: content */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 3 }}>
+              <Box sx={{ width: 40, height: 1, bgcolor: "#16a34a" }} />
+              <Typography sx={{ fontSize: "0.75rem", fontWeight: 700, color: "#16a34a", letterSpacing: "0.15em", textTransform: "uppercase" }}>À propos</Typography>
+            </Stack>
+
+            <Typography variant="h2" sx={{ fontSize: { xs: "2.5rem", md: "4rem", lg: "4.5rem" }, fontWeight: 900, lineHeight: 1.0, letterSpacing: "-0.03em", color: "#0f172a", mb: 4 }}>
+              L'art du{" "}
+              <Box component="span" sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 400, color: "#16a34a" }}>
+                reconditionnement
+              </Box>{" "}
+              diesel.
+            </Typography>
+
+            <Typography sx={{ color: "text.secondary", fontSize: "1.1rem", lineHeight: 1.8, mb: 5 }}>
+              Depuis 2010, nous donnons une seconde vie à des milliers de turbos et injecteurs.
+              Chaque pièce passe entre les mains de nos techniciens spécialisés et subit une batterie
+              de tests rigoureux avant de rejoindre votre véhicule.
+            </Typography>
+
+            {/* Strengths grid */}
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 3, mb: 5 }}>
+              {strengths.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <Box sx={{ display: "flex", gap: 2 }}>
+                    <Box sx={{ width: 32, height: 32, borderRadius: 2, bgcolor: "#dcfce7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <CheckCircleIcon sx={{ fontSize: 18, color: "#16a34a" }} />
+                    </Box>
+                    <Box>
+                      <Typography sx={{ fontWeight: 800, fontSize: "1rem", color: "#0f172a", mb: 0.5 }}>{s.title}</Typography>
+                      <Typography sx={{ fontSize: "0.85rem", color: "text.secondary", lineHeight: 1.6 }}>{s.desc}</Typography>
+                    </Box>
+                  </Box>
+                </motion.div>
               ))}
-            </div>
-          </div>
+            </Box>
 
-          {/* Right: content */}
-          <div className="lg:pl-6">
-            <p className="text-green-600 font-semibold text-sm uppercase tracking-widest mb-3">À propos</p>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 leading-tight mb-5">
-              Euro Système<br />
-              <span className="relative inline-block text-green-600">
-                Injection
-                {/* Hand-drawn circle */}
-                <svg className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+20px)] overflow-visible pointer-events-none" viewBox="0 0 180 55" fill="none">
-                  <path d="M10 28 Q15 5 90 5 Q165 5 170 28 Q165 50 90 50 Q15 50 10 28" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-                </svg>
-              </span>
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Spécialistes de l'injection diesel depuis plus de{" "}
-              <span className="relative inline-block font-bold text-gray-800">
-                15 ans
-                <svg className="absolute -bottom-1 left-0 w-full overflow-visible pointer-events-none" height="5" viewBox="0 0 45 5" preserveAspectRatio="none" fill="none">
-                  <path d="M0 4 Q11 1 22 3 Q33 5 45 2" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </span>. Nous reconditionnons,
-              testons et garantissons chaque pièce pour vous offrir une alternative fiable et
-              économique aux pièces neuves.
-            </p>
-
-            {/* Strengths */}
-            <ul className="space-y-3 mb-8">
-              {strengths.map((s) => (
-                <li key={s} className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">{s}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Stats row for mobile */}
-            <div className="grid grid-cols-4 gap-3 mb-8 lg:hidden">
-              {stats.map((s) => (
-                <div key={s.label} className="text-center bg-white rounded-xl p-3 border border-gray-100">
-                  <p className="text-xl font-black text-green-600">{s.value}</p>
-                  <p className="text-[10px] text-gray-500 leading-tight">{s.label}</p>
-                </div>
-              ))}
-            </div>
-
-            <a
-              href="mailto:info@www.auto-diesels.com"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-green-600/25 hover:shadow-green-600/40"
-            >
-              <Mail className="w-4 h-4" />
-              Nous contacter
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+            <Stack direction="row" sx={{ gap: 2, flexWrap: "wrap" }} spacing={0}>
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<EmailOutlinedIcon />}
+                endIcon={<ArrowOutwardIcon />}
+                href="mailto:info@www.auto-diesels.com"
+                sx={{
+                  bgcolor: "#0f172a", color: "white",
+                  fontWeight: 800, px: 3.5, py: 1.85, borderRadius: 99,
+                  boxShadow: "0 12px 28px rgba(15,23,42,0.25)",
+                  "&:hover": { bgcolor: "#16a34a", transform: "translateY(-2px)" },
+                  transition: "all 0.3s",
+                }}
+              >
+                Nous contacter
+              </Button>
+              <Button
+                variant="outlined"
+                size="large"
+                startIcon={<PhoneIcon />}
+                sx={{
+                  borderColor: "#0f172a",
+                  color: "#0f172a",
+                  borderWidth: 2,
+                  fontWeight: 700,
+                  px: 3.5, py: 1.85, borderRadius: 99,
+                  "&:hover": { borderWidth: 2, bgcolor: "rgba(15,23,42,0.04)" },
+                }}
+              >
+                Appeler
+              </Button>
+            </Stack>
+          </motion.div>
+        </Box>
+      </Container>
+    </Box>
   );
 }

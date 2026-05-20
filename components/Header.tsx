@@ -1,117 +1,161 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, ShoppingCart, Search, User, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  AppBar, Toolbar, Box, Button, IconButton, Drawer, List, ListItem,
+  ListItemButton, ListItemText, Chip, Container, useScrollTrigger, Slide,
+  Menu, MenuItem
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import SearchIcon from "@mui/icons-material/Search";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 
 const navLinks = [
-  { name: "Turbos", href: "#products", hasDropdown: true, items: ["Turbo Renault", "Turbo Peugeot", "Turbo Citroën", "Turbo Audi", "Turbo BMW", "Turbo Volkswagen"] },
-  { name: "Injecteurs", href: "#products", hasDropdown: true, items: ["Injecteur Renault", "Injecteur Peugeot", "Injecteur Ford", "Injecteur Toyota"] },
-  { name: "Nos Marques", href: "#brands" },
+  { name: "Turbos", href: "#products", items: ["Turbo Renault", "Turbo Peugeot", "Turbo Citroën", "Turbo Audi", "Turbo BMW", "Turbo VW"] },
+  { name: "Injecteurs", href: "#products", items: ["Injecteur Renault", "Injecteur Peugeot", "Injecteur Ford", "Injecteur Toyota"] },
+  { name: "Marques", href: "#brands" },
   { name: "Actualités", href: "#news" },
   { name: "Contact", href: "#footer" },
 ];
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEls, setAnchorEls] = useState<Record<string, HTMLElement | null>>({});
+  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 30 });
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const openMenu = (e: React.MouseEvent<HTMLElement>, name: string) =>
+    setAnchorEls((p) => ({ ...p, [name]: e.currentTarget }));
+  const closeMenu = (name: string) =>
+    setAnchorEls((p) => ({ ...p, [name]: null }));
 
   return (
-    <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-      isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100" : "bg-transparent"
-    )}>
-      {/* Top bar */}
-      <div className={cn("transition-all duration-500 overflow-hidden", isScrolled ? "max-h-0" : "max-h-12")}>
-        <div className="bg-gray-900 text-gray-400 text-xs py-2 px-4">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <span>🚚 Livraison gratuite dès 200€ · Expédition 24-48h · Garantie 2 ans</span>
-            <a href="mailto:info@www.auto-diesels.com" className="hover:text-green-400 transition-colors">info@www.auto-diesels.com</a>
-          </div>
-        </div>
-      </div>
+    <>
+      {/* Announcement bar */}
+      <Box
+        sx={{
+          bgcolor: "#14532d", color: "white", py: 0.75, textAlign: "center",
+          fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.02em",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
+          <LocalShippingOutlinedIcon sx={{ fontSize: 14 }} />
+          Livraison gratuite dès 200€
+        </Box>
+        <Box component="span" sx={{ opacity: 0.4 }}>|</Box>
+        <span>Expédition 24-48h</span>
+        <Box component="span" sx={{ opacity: 0.4 }}>|</Box>
+        <span>Garantie 2 ans sur toutes les pièces</span>
+      </Box>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-28">
-          {/* Logo */}
-          <a href="#" className="flex items-center group">
-            <img
-              src="/logo.png"
-              alt="Auto Diesels"
-              className={cn(
-                "h-20 w-auto transition-all duration-300 group-hover:scale-105",
-                isScrolled ? "brightness-100" : "drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]"
+      <AppBar
+        position="sticky"
+        elevation={trigger ? 2 : 0}
+        sx={{
+          bgcolor: "white",
+          borderBottom: trigger ? "none" : "1px solid",
+          borderColor: "grey.100",
+          transition: "box-shadow 0.3s ease",
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar disableGutters sx={{ height: { xs: 68, md: 80 }, gap: 2 }}>
+
+            {/* Logo */}
+            <Box component="a" href="#" sx={{ display: "flex", alignItems: "center", mr: 3, flexShrink: 0 }}>
+              <Box component="img" src="/logo.png" alt="Auto Diesels" sx={{ height: { xs: 52, md: 64 }, width: "auto" }} />
+            </Box>
+
+            {/* Desktop nav */}
+            <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center", gap: 0.5, flexGrow: 1 }}>
+              {navLinks.map((link) =>
+                link.items ? (
+                  <Box key={link.name}>
+                    <Button
+                      onClick={(e) => openMenu(e, link.name)}
+                      endIcon={<KeyboardArrowDownIcon sx={{ fontSize: "1rem !important", transition: "transform 0.2s", transform: anchorEls[link.name] ? "rotate(180deg)" : "none" }} />}
+                      sx={{ color: "text.primary", fontWeight: 600, fontSize: "0.875rem", px: 1.5, "&:hover": { bgcolor: "grey.50", color: "primary.main" } }}
+                    >
+                      {link.name}
+                    </Button>
+                    <Menu
+                      anchorEl={anchorEls[link.name]}
+                      open={Boolean(anchorEls[link.name])}
+                      onClose={() => closeMenu(link.name)}
+                      slotProps={{ paper: { elevation: 8, sx: { borderRadius: 3, mt: 1, minWidth: 200, border: "1px solid", borderColor: "grey.100", "& .MuiMenuItem-root": { fontSize: "0.875rem", py: 1.25, "&:hover": { bgcolor: "#f0fdf4", color: "primary.main" } } } } }}
+                    >
+                      {link.items.map((item) => (
+                        <MenuItem key={item} onClick={() => closeMenu(link.name)} component="a" href="#products">{item}</MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                ) : (
+                  <Button key={link.name} href={link.href} sx={{ color: "text.primary", fontWeight: 600, fontSize: "0.875rem", px: 1.5, "&:hover": { bgcolor: "grey.50", color: "primary.main" } }}>
+                    {link.name}
+                  </Button>
+                )
               )}
-            />
-          </a>
+            </Box>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <div key={link.name} className="relative"
-                onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
+            {/* Right actions */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: "auto" }}>
+              <IconButton sx={{ color: "text.secondary", display: { xs: "none", sm: "flex" } }}>
+                <SearchIcon />
+              </IconButton>
+
+              <Button
+                variant="contained"
+                href="#products"
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  bgcolor: "primary.main",
+                  fontWeight: 700,
+                  px: 2.5,
+                  "&:hover": { bgcolor: "primary.dark" },
+                }}
               >
-                <a href={link.href} className={cn(
-                  "flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-all",
-                  isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-white/90 hover:text-white hover:bg-white/10"
-                )}>
-                  {link.name}
-                  {link.hasDropdown && <ChevronDown className="w-3.5 h-3.5 opacity-60" />}
-                </a>
-                {link.hasDropdown && activeDropdown === link.name && (
-                  <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-1">
-                    {link.items?.map((item) => (
-                      <a key={item} href="#products" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 transition-colors">
-                        {item}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </nav>
+                Nos pièces
+              </Button>
 
-          {/* Actions */}
-          <div className="flex items-center gap-1">
-            <button className={cn("hidden sm:flex p-2 rounded-lg transition-colors", isScrolled ? "text-gray-600 hover:bg-gray-100" : "text-white/80 hover:bg-white/10")}>
-              <Search className="w-5 h-5" />
-            </button>
-            <button className={cn("hidden sm:flex p-2 rounded-lg transition-colors", isScrolled ? "text-gray-600 hover:bg-gray-100" : "text-white/80 hover:bg-white/10")}>
-              <User className="w-5 h-5" />
-            </button>
-            <button className={cn("relative p-2 rounded-lg transition-colors", isScrolled ? "text-gray-600 hover:bg-gray-100" : "text-white/80 hover:bg-white/10")}>
-              <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
-            </button>
-            <button className="lg:hidden p-2 rounded-lg" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen
-                ? <X className={cn("w-6 h-6", isScrolled ? "text-gray-900" : "text-white")} />
-                : <Menu className={cn("w-6 h-6", isScrolled ? "text-gray-900" : "text-white")} />
-              }
-            </button>
-          </div>
-        </div>
-      </div>
+              <IconButton sx={{ position: "relative", color: "text.secondary" }}>
+                <ShoppingCartOutlinedIcon />
+                <Box sx={{ position: "absolute", top: 4, right: 4, width: 10, height: 10, bgcolor: "primary.main", borderRadius: "50%", border: "2px solid white" }} />
+              </IconButton>
 
-      {/* Mobile menu */}
-      <div className={cn("lg:hidden bg-white border-t border-gray-100 overflow-hidden transition-all duration-300", isMenuOpen ? "max-h-screen" : "max-h-0")}>
-        <nav className="px-4 py-4 space-y-1">
+              <IconButton sx={{ display: { lg: "none" }, color: "text.primary" }} onClick={() => setDrawerOpen(true)}>
+                <MenuIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* Mobile drawer */}
+      <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}
+        slotProps={{ paper: { sx: { width: 300, pt: 2 } } }}
+      >
+        <Box sx={{ px: 2, mb: 2 }}>
+          <Box component="img" src="/logo.png" alt="Auto Diesels" sx={{ height: 48, width: "auto" }} />
+        </Box>
+        <List>
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} onClick={() => setIsMenuOpen(false)}
-              className="block px-4 py-3 text-gray-700 hover:text-green-700 hover:bg-green-50 rounded-lg font-medium transition-colors">
-              {link.name}
-            </a>
+            <ListItem key={link.name} disablePadding>
+              <ListItemButton component="a" href={link.href} onClick={() => setDrawerOpen(false)}
+                sx={{ borderRadius: 2, mx: 1, "&:hover": { bgcolor: "primary.50", color: "primary.main" } }}
+              >
+                <ListItemText primary={link.name} slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
+              </ListItemButton>
+            </ListItem>
           ))}
-        </nav>
-      </div>
-    </header>
+        </List>
+        <Box sx={{ px: 3, mt: 2 }}>
+          <Button variant="contained" fullWidth href="#products" onClick={() => setDrawerOpen(false)} sx={{ fontWeight: 700 }}>
+            Voir nos pièces
+          </Button>
+        </Box>
+      </Drawer>
+    </>
   );
 }

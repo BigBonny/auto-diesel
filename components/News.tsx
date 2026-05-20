@@ -1,117 +1,176 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 
 const articles = [
   {
-    id: 1,
-    title: "Symptômes et diagnostic d'un turbo défaillant",
-    excerpt: "Fumée bleue, perte de puissance, sifflement... Apprenez à identifier les signes d'un turbo en fin de vie.",
-    category: "Diagnostic",
-    image: "https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=600&q=80",
-    featured: true,
+    title: "Comment choisir un turbo reconditionné de qualité ?",
+    excerpt: "Tous les critères à vérifier avant d'acheter un turbo reconditionné : inspection, test banc, garantie...",
+    date: "12 Mai 2025",
+    readTime: "6 min",
+    category: "Guide",
+    img: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=900&q=80",
   },
   {
-    id: 2,
-    title: "Filtre à gasoil : emplacement et remplacement",
-    excerpt: "Guide pratique pour localiser et remplacer le filtre à gasoil sur les principaux modèles.",
+    title: "Symptômes d'un injecteur défaillant",
+    excerpt: "Fumée noire, surconsommation, perte de puissance... comment détecter un injecteur HS à temps.",
+    date: "4 Mai 2025",
+    readTime: "4 min",
+    category: "Technique",
+    img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=900&q=80",
+  },
+  {
+    title: "Entretien du système d'injection diesel",
+    excerpt: "Les bons gestes pour prolonger la durée de vie de votre système d'injection et éviter les pannes coûteuses.",
+    date: "28 Avr 2025",
+    readTime: "5 min",
     category: "Entretien",
-    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80",
-    featured: false,
-  },
-  {
-    id: 3,
-    title: "Comment identifier un filtre à air encrassé",
-    excerpt: "Un filtre à air colmaté affecte les performances et la consommation. Voici comment le contrôler.",
-    category: "Conseils",
-    image: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80",
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Coût de remplacement d'un catalyseur",
-    excerpt: "Prix, main d'œuvre, alternatives reconditionnées... Tout ce que vous devez savoir.",
-    category: "Prix",
-    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80",
-    featured: false,
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80",
   },
 ];
 
-const categoryColors: Record<string, string> = {
-  Diagnostic: "bg-red-100 text-red-700",
-  Entretien: "bg-blue-100 text-blue-700",
-  Conseils: "bg-green-100 text-green-700",
-  Prix: "bg-orange-100 text-orange-700",
-};
-
 export default function News() {
-  const featured = articles.find((a) => a.featured);
-  const rest = articles.filter((a) => !a.featured);
-
   return (
-    <section id="news" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Box component="section" id="news" sx={{ bgcolor: "white", py: { xs: 12, md: 18 }, position: "relative" }}>
+      <Container maxWidth="xl">
         {/* Header */}
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <p className="text-green-600 text-sm font-semibold uppercase tracking-widest mb-1">Blog</p>
-            <h2 className="relative inline-block text-3xl sm:text-4xl font-black text-gray-900">
-              Actualités &{" "}
-              <span className="relative inline-block">
-                Conseils
-                {/* Squiggly underline */}
-                <svg className="absolute -bottom-2 left-0 w-full overflow-visible pointer-events-none" height="8" viewBox="0 0 120 8" preserveAspectRatio="none" fill="none">
-                  <path d="M0 4 Q15 1 30 4 Q45 7 60 4 Q75 1 90 4 Q105 7 120 4" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"/>
-                </svg>
-              </span>
-            </h2>
-          </div>
-          <a href="#" className="hidden sm:flex items-center gap-2 text-gray-600 hover:text-green-600 font-semibold transition-colors">
-            Voir tout <ArrowRight className="w-4 h-4" />
-          </a>
-        </div>
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, alignItems: { lg: "flex-end" }, justifyContent: "space-between", mb: { xs: 8, md: 10 }, gap: 4 }}>
+          <Box sx={{ maxWidth: 720 }}>
+            <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 3 }}>
+              <Box sx={{ width: 40, height: 1, bgcolor: "#16a34a" }} />
+              <Typography sx={{ fontSize: "0.75rem", fontWeight: 700, color: "#16a34a", letterSpacing: "0.15em", textTransform: "uppercase" }}>Journal</Typography>
+            </Stack>
+            <Typography variant="h2" sx={{ fontSize: { xs: "2.5rem", md: "4rem", lg: "5rem" }, fontWeight: 900, lineHeight: 1.0, letterSpacing: "-0.03em", color: "#0f172a", mb: 2 }}>
+              Conseils &{" "}
+              <Box component="span" sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 400, color: "#16a34a" }}>actualités</Box>
+            </Typography>
+            <Typography sx={{ color: "text.secondary", fontSize: "1.05rem", lineHeight: 1.7, maxWidth: 540 }}>
+              Guides techniques, conseils d'entretien et actualités sur l'injection diesel par nos experts.
+            </Typography>
+          </Box>
+          <Button
+            variant="outlined"
+            endIcon={<ArrowOutwardIcon />}
+            sx={{
+              borderColor: "#0f172a", color: "#0f172a", borderWidth: 2,
+              fontWeight: 700, px: 3, py: 1.5, borderRadius: 99,
+              "&:hover": { borderWidth: 2, bgcolor: "#0f172a", color: "white" },
+            }}
+          >
+            Tous les articles
+          </Button>
+        </Box>
 
-        {/* Layout: featured + 3 side cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Featured */}
-          {featured && (
-            <a href="#" className="group lg:col-span-2 relative rounded-3xl overflow-hidden block aspect-[16/10] shadow-lg">
-              <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-900/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                <span className={`text-xs font-bold px-3 py-1 rounded-full ${categoryColors[featured.category]} mb-3 inline-block`}>
-                  {featured.category}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-white mb-2">{featured.title}</h3>
-                <p className="text-gray-300 text-sm line-clamp-2">{featured.excerpt}</p>
-                <span className="inline-flex items-center gap-1 text-green-400 text-sm font-semibold mt-3">
-                  Lire la suite <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </div>
-            </a>
-          )}
+        {/* Featured article (big) + 2 small */}
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1.4fr 1fr" }, gap: 4 }}>
+          {/* Big featured */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Box
+              sx={{
+                position: "relative",
+                borderRadius: 5,
+                overflow: "hidden",
+                aspectRatio: { xs: "4/3", lg: "5/6" },
+                cursor: "pointer",
+                "&:hover img": { transform: "scale(1.05)" },
+                "&:hover .news-arrow": { transform: "translate(4px, -4px) rotate(0deg)" },
+              }}
+            >
+              <Box
+                component="img"
+                src={articles[0].img}
+                alt=""
+                sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)" }}
+              />
+              <Box sx={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%)" }} />
 
-          {/* Side cards */}
-          <div className="flex flex-col gap-4">
-            {rest.map((article) => (
-              <a key={article.id} href="#" className="group flex gap-4 bg-gray-50 hover:bg-gray-100 rounded-2xl overflow-hidden transition-colors p-3">
-                <div className="w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden">
-                  <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                </div>
-                <div className="flex-1 min-w-0 flex flex-col justify-center">
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${categoryColors[article.category]} inline-block w-fit mb-1.5`}>
-                    {article.category}
-                  </span>
-                  <h3 className="text-sm font-bold text-gray-900 line-clamp-2 leading-snug">{article.title}</h3>
-                  <span className="inline-flex items-center gap-1 text-xs text-green-600 font-semibold mt-1.5">
-                    Lire <ArrowRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </a>
+              {/* Top chip */}
+              <Box sx={{ position: "absolute", top: 24, left: 24, bgcolor: "rgba(255,255,255,0.15)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.25)", color: "white", fontSize: "0.72rem", fontWeight: 700, px: 1.75, py: 0.6, borderRadius: 99, letterSpacing: "0.05em" }}>
+                {articles[0].category}
+              </Box>
+
+              {/* Bottom content */}
+              <Box sx={{ position: "absolute", bottom: 0, left: 0, right: 0, p: { xs: 4, md: 5 }, color: "white" }}>
+                <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 2, color: "rgba(255,255,255,0.7)" }}>
+                  <Typography sx={{ fontSize: "0.78rem", fontWeight: 600 }}>{articles[0].date}</Typography>
+                  <Box sx={{ width: 3, height: 3, borderRadius: "50%", bgcolor: "rgba(255,255,255,0.5)" }} />
+                  <Typography sx={{ fontSize: "0.78rem", fontWeight: 600 }}>{articles[0].readTime} de lecture</Typography>
+                </Stack>
+                <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: { xs: "1.8rem", md: "2.6rem" }, fontWeight: 400, lineHeight: 1.1, mb: 2, maxWidth: 500 }}>
+                  {articles[0].title}
+                </Typography>
+                <Typography sx={{ color: "rgba(255,255,255,0.75)", fontSize: "0.95rem", lineHeight: 1.6, maxWidth: 480, mb: 3 }}>
+                  {articles[0].excerpt}
+                </Typography>
+                <Stack direction="row" sx={{ alignItems: "center", gap: 1, fontWeight: 700, fontSize: "0.85rem" }}>
+                  Lire l'article
+                  <Box
+                    className="news-arrow"
+                    sx={{
+                      width: 32, height: 32, borderRadius: "50%",
+                      bgcolor: "#16a34a",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      transition: "transform 0.35s ease",
+                    }}
+                  >
+                    <ArrowOutwardIcon sx={{ fontSize: 16 }} />
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+          </motion.div>
+
+          {/* Two small */}
+          <Stack spacing={4}>
+            {articles.slice(1).map((a, i) => (
+              <motion.div
+                key={a.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15 + i * 0.1, duration: 0.6 }}
+              >
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: { xs: "1fr", sm: "200px 1fr" },
+                    gap: 3,
+                    cursor: "pointer",
+                    p: 2,
+                    borderRadius: 4,
+                    transition: "all 0.3s",
+                    "&:hover": { bgcolor: "#fafaf9" },
+                    "&:hover img": { transform: "scale(1.05)" },
+                  }}
+                >
+                  <Box sx={{ aspectRatio: "1", borderRadius: 3, overflow: "hidden" }}>
+                    <Box component="img" src={a.img} alt="" sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s" }} />
+                  </Box>
+                  <Box>
+                    <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 1.5 }}>
+                      <Box sx={{ fontSize: "0.7rem", fontWeight: 700, color: "#16a34a", textTransform: "uppercase", letterSpacing: "0.1em" }}>{a.category}</Box>
+                      <Box sx={{ width: 3, height: 3, borderRadius: "50%", bgcolor: "#cbd5e1" }} />
+                      <Typography sx={{ fontSize: "0.72rem", color: "text.secondary", fontWeight: 600 }}>{a.readTime}</Typography>
+                    </Stack>
+                    <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: { xs: "1.25rem", md: "1.6rem" }, fontWeight: 400, lineHeight: 1.2, color: "#0f172a", mb: 1.5 }}>
+                      {a.title}
+                    </Typography>
+                    <Typography sx={{ color: "text.secondary", fontSize: "0.88rem", lineHeight: 1.6, mb: 2 }}>{a.excerpt}</Typography>
+                    <Typography sx={{ fontSize: "0.78rem", color: "#94a3b8", fontWeight: 600 }}>{a.date}</Typography>
+                  </Box>
+                </Box>
+              </motion.div>
             ))}
-          </div>
-        </div>
-      </div>
-    </section>
+          </Stack>
+        </Box>
+      </Container>
+    </Box>
   );
 }
