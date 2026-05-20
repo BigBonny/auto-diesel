@@ -22,6 +22,16 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-br from-gray-950/90 via-gray-900/75 to-gray-800/50" />
         {/* Green accent glow */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-green-500/10 rounded-full blur-3xl" />
+        {/* Decorative star doodle top-right */}
+        <svg className="absolute top-32 right-10 w-12 h-12 text-green-400/30 hidden lg:block" viewBox="0 0 50 50" fill="none">
+          <path d="M25 5 L27 20 L42 18 L30 27 L35 43 L25 33 L15 43 L20 27 L8 18 L23 20 Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"/>
+        </svg>
+        {/* Decorative dots pattern */}
+        <svg className="absolute bottom-20 right-16 w-24 h-24 text-white/10 hidden lg:block" viewBox="0 0 60 60" fill="currentColor">
+          {[0,1,2,3,4].map(row => [0,1,2,3,4].map(col => (
+            <circle key={`${row}-${col}`} cx={col*12+6} cy={row*12+6} r="1.5" />
+          )))}
+        </svg>
       </div>
 
       {/* Content */}
@@ -36,12 +46,31 @@ export default function Hero() {
           {/* Heading */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-6">
             Turbos &<br />
-            <span className="text-green-400">Injecteurs</span><br />
-            <span className="text-white/60 text-4xl sm:text-5xl font-bold">toutes marques</span>
+            <span className="relative inline-block text-green-400">
+              Injecteurs
+              {/* Hand-drawn circle - bigger, red */}
+              <svg className="absolute -inset-5 w-[calc(100%+40px)] h-[calc(100%+40px)] overflow-visible pointer-events-none" viewBox="0 0 280 80" fill="none">
+                <path d="M12 40 Q14 10 140 8 Q266 6 268 40 Q266 72 140 74 Q14 72 12 40" stroke="#ef4444" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
+                <path d="M268 38 Q266 8 140 6 Q14 4 12 38" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.3"/>
+              </svg>
+            </span><br />
+            <span className="relative inline-block text-white/60 text-4xl sm:text-5xl font-bold">
+              toutes marques
+              {/* Squiggly underline */}
+              <svg className="absolute -bottom-2 left-0 w-full overflow-visible pointer-events-none" height="8" viewBox="0 0 200 8" preserveAspectRatio="none" fill="none">
+                <path d="M0 4 Q10 1 20 4 Q30 7 40 4 Q50 1 60 4 Q70 7 80 4 Q90 1 100 4 Q110 7 120 4 Q130 1 140 4 Q150 7 160 4 Q170 1 180 4 Q190 7 200 4" stroke="#86efac" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </span>
           </h1>
 
           <p className="text-gray-300 text-lg mb-10 leading-relaxed max-w-lg">
-            Spécialiste de l'injection diesel depuis 15 ans. Pièces reconditionnées, garanties 2 ans, expédiées sous 24h.
+            Spécialiste de l'injection diesel depuis{" "}
+            <span className="relative inline-block text-white font-bold">
+              15 ans
+              <svg className="absolute -bottom-1 left-0 w-full overflow-visible pointer-events-none" height="6" viewBox="0 0 50 6" preserveAspectRatio="none" fill="none">
+                <path d="M0 5 Q12 1 25 3 Q38 5 50 2" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round"/>
+              </svg>
+            </span>. Pièces reconditionnées, garanties 2 ans, expédiées sous 24h.
           </p>
 
           {/* Search card */}

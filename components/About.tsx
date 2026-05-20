@@ -56,11 +56,23 @@ export default function About() {
             <p className="text-green-600 font-semibold text-sm uppercase tracking-widest mb-3">À propos</p>
             <h2 className="text-4xl sm:text-5xl font-black text-gray-900 leading-tight mb-5">
               Euro Système<br />
-              <span className="text-green-600">Injection</span>
+              <span className="relative inline-block text-green-600">
+                Injection
+                {/* Hand-drawn circle */}
+                <svg className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+20px)] overflow-visible pointer-events-none" viewBox="0 0 180 55" fill="none">
+                  <path d="M10 28 Q15 5 90 5 Q165 5 170 28 Q165 50 90 50 Q15 50 10 28" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+                </svg>
+              </span>
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Spécialistes de l'injection diesel depuis plus de 15 ans. Nous reconditionnons, 
-              testons et garantissons chaque pièce pour vous offrir une alternative fiable et 
+              Spécialistes de l'injection diesel depuis plus de{" "}
+              <span className="relative inline-block font-bold text-gray-800">
+                15 ans
+                <svg className="absolute -bottom-1 left-0 w-full overflow-visible pointer-events-none" height="5" viewBox="0 0 45 5" preserveAspectRatio="none" fill="none">
+                  <path d="M0 4 Q11 1 22 3 Q33 5 45 2" stroke="#16a34a" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </span>. Nous reconditionnons,
+              testons et garantissons chaque pièce pour vous offrir une alternative fiable et
               économique aux pièces neuves.
             </p>
 

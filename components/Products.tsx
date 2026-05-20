@@ -33,7 +33,13 @@ export default function Products() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <p className="text-green-600 text-sm font-semibold uppercase tracking-wider mb-1">Catalogue</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-gray-900">Nos produits</h2>
+            <h2 className="relative inline-block text-3xl sm:text-4xl font-black text-gray-900">
+              Nos produits
+              {/* Hand-drawn underline */}
+              <svg className="absolute -bottom-2 left-0 w-full overflow-visible pointer-events-none" height="8" viewBox="0 0 160 8" preserveAspectRatio="none" fill="none">
+                <path d="M2 6 Q40 2 80 5 Q120 8 158 3" stroke="#16a34a" strokeWidth="3" strokeLinecap="round"/>
+              </svg>
+            </h2>
           </div>
           <div className="flex gap-2 bg-white rounded-xl border border-gray-200 p-1">
             {categories.map((cat) => (

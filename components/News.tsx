@@ -55,7 +55,16 @@ export default function News() {
         <div className="flex items-end justify-between mb-12">
           <div>
             <p className="text-green-600 text-sm font-semibold uppercase tracking-widest mb-1">Blog</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-gray-900">Actualités & Conseils</h2>
+            <h2 className="relative inline-block text-3xl sm:text-4xl font-black text-gray-900">
+              Actualités &{" "}
+              <span className="relative inline-block">
+                Conseils
+                {/* Squiggly underline */}
+                <svg className="absolute -bottom-2 left-0 w-full overflow-visible pointer-events-none" height="8" viewBox="0 0 120 8" preserveAspectRatio="none" fill="none">
+                  <path d="M0 4 Q15 1 30 4 Q45 7 60 4 Q75 1 90 4 Q105 7 120 4" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round"/>
+                </svg>
+              </span>
+            </h2>
           </div>
           <a href="#" className="hidden sm:flex items-center gap-2 text-gray-600 hover:text-green-600 font-semibold transition-colors">
             Voir tout <ArrowRight className="w-4 h-4" />
