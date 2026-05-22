@@ -13,8 +13,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Turbo Pas Cher en Échange Standard | Achat/Vente de Turbocompresseur - Mega Turbo",
-  description: "Le Meilleur du Turbo pour Votre Voiture est sur Megaturbo ! Des Références de Turbocompresseur pour Toutes les Marques.",
+  title: "Turbo Pas Cher en Échange Standard | Achat/Vente de Turbocompresseur - Auto Diesel",
+  description: "Le Meilleur du Turbo pour Votre Voiture est sur Auto Diesel ! Des Références de Turbocompresseur pour Toutes les Marques.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

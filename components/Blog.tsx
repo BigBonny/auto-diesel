@@ -33,7 +33,7 @@ export default function Blog() {
             fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.2em",
             color: "#9eaeac", textTransform: "uppercase", marginBottom: 10,
           }}>
-            Le blog de MegaTurbo
+            Le blog de Auto Diesel
           </div>
           <h2 style={{
             fontFamily: "var(--font-heading)",

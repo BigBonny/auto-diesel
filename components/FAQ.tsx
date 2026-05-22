@@ -8,7 +8,7 @@ const ORANGE = "#ff5700";
 const questions = [
   { q: "Qu'est-ce qu'une pièce en échange standard ?",
     a: "Une pièce en échange standard est une pièce d'origine qui a été démontée, entièrement nettoyée, testée et remise en état selon les normes du constructeur. Vous achetez la pièce et payez une consigne, qui vous est remboursée dès réception de votre ancienne pièce." },
-  { q: "Quelle est la durée de garantie des pièces vendues sur Megaturbo ?",
+  { q: "Quelle est la durée de garantie des pièces vendues sur Auto Diesel ?",
     a: "Toutes nos pièces, qu'elles soient neuves d'origine ou en échange standard, bénéficient d'une garantie de 2 ans." },
   { q: "Les pièces proposées sont-elles neuves ou reconditionnées ?",
     a: "Nous proposons les deux : des pièces neuves d'origine constructeur, et des pièces reconditionnées en échange standard, toutes contrôlées et garanties." },

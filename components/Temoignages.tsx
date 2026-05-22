@@ -8,7 +8,7 @@ const NAVY = "#274554";
 
 const reviews = [
   {
-    text: "J'ai acheté un injecteur sur MegaTurbo pour remplacer celui de ma Golf 7 GTD. Non seulement la pièce est arrivée en 48h, parfaitement emballée ! Résultat : voiture qui tourne comme une horloge, et une belle économie par rapport au garage.",
+    text: "J'ai acheté un injecteur sur Auto Diesel pour remplacer celui de ma Golf 7 GTD. Non seulement la pièce est arrivée en 48h, parfaitement emballée ! Résultat : voiture qui tourne comme une horloge, et une belle économie par rapport au garage.",
     date: "Suite à une expérience du 07 mai 2025",
     rating: 5,
   },

@@ -17,7 +17,7 @@ const benefits = [
     img: "/assets/benefit_2.png",
     title: "Large choix de turbos",
     paras: [
-      "Notre site Mega Turbo est la référence de la vente de turbocompresseurs pour votre voiture sur internet. Vous pourrez y effectuer un achat de turbo pas cher, fiable, et de grande qualité !",
+      "Notre site Auto Diesel est la référence de la vente de turbocompresseurs pour votre voiture sur internet. Vous pourrez y effectuer un achat de turbo pas cher, fiable, et de grande qualité !",
       "Les pièces mécaniques pour voiture qui sont proposées sur notre site ont été sélectionnées par nos soins pour leur qualité et leur fiabilité. Cette exigence nous a permis de nouer des partenariats avec les distributeurs officiels de turbos des constructeurs IHI, KKK, Garrett et Mitsubishi.",
     ],
     reverse: true,
@@ -26,7 +26,7 @@ const benefits = [
     img: "/assets/benefit_3.png",
     title: "La garantie 100% satisfait",
     paras: [
-      "Notre équipe est à votre écoute. Réactivité, professionnalisme et connaissance du métier font de Mega Turbo une référence incontournable de la vente de turbos pas chers ! Nous faire confiance pour l'achat de votre turbo, c'est la certitude d'avoir :",
+      "Notre équipe est à votre écoute. Réactivité, professionnalisme et connaissance du métier font de Auto Diesel une référence incontournable de la vente de turbos pas chers ! Nous faire confiance pour l'achat de votre turbo, c'est la certitude d'avoir :",
     ],
     bullets: [
       "Un grand choix de turbos à prix bas tout en étant de qualité",
@@ -72,13 +72,13 @@ export default function Benefits() {
               />
             </svg>
           </span>{" "}
-          de choisir MegaTurbo ?
+          de choisir Auto Diesel ?
         </h2>
         <p style={{
           textAlign: "center", maxWidth: 900, margin: "0 auto 42px",
           fontSize: "1.25rem", color: "#4b5563", lineHeight: 1.6,
         }}>
-          Vous voulez acheter un turbo pas cher sans faire l'impasse sur la qualité ? Découvrez MegaTurbo ! Notre boutique en ligne possède un grand choix des plus grandes marques autos de turbos à bas prix. Que vous cherchiez une pièce de la marque KKK, Mitsubishi, IHI ou Garrett, nous vendons le turbo pas cher qu'il vous faut !
+          Vous voulez acheter un turbo pas cher sans faire l'impasse sur la qualité ? Découvrez Auto Diesel ! Notre boutique en ligne possède un grand choix des plus grandes marques autos de turbos à bas prix. Que vous cherchiez une pièce de la marque KKK, Mitsubishi, IHI ou Garrett, nous vendons le turbo pas cher qu'il vous faut !
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
