@@ -1,0 +1,84 @@
+/**
+ * PROFILEO GROUP - All Rights Reserved
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is used in a module that was deployed as part of an intervention by the Profileo group.
+ * Do not reuse on another platform without our agreement.
+ * Unauthorized selling, copying or diffusing of this module, via any medium is strictly prohibited.
+ * Proprietary and confidential.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Eo_ClearCache to newer
+ * versions in the future. If you wish to customize Eo_ClearCache for your
+ * needs please contact <contact@profileo.com> for more information.
+ *
+ * @author      Profileo Team <contact@profileo.com>
+ * @copyright   Profileo Group - All Rights Reserved
+ */
+
+let eoClearCacheCapturedDOMContentLoadedEvent = undefined;
+let eoClearCacheLoaded = false;
+
+// Capture DOMContentLoaded event within event capturing phase
+document.addEventListener('DOMContentLoaded', function(event) {
+    // If the document loads entirely before the eo_clearcache ajax call has finished, capture the event
+    // within its capturing phase.
+    if ( ! eoClearCacheLoaded) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        eoClearCacheCapturedDOMContentLoadedEvent = event;
+        console.log("eo_clearcache - document loaded captured");
+    }
+}, {
+    once: true,
+    capture: true
+});
+
+// Filter and remove duplicates product ID
+const eo_cc_filtered_product_ids = eo_cc_product_ids.filter((element, position) => eo_cc_product_ids.indexOf(element) == position);
+
+// Launch with st timeout, so we liberate the main JS thread and we don't impact the blocking time metric
+setTimeout(function() { 
+	$.ajax({
+	    url: eo_cc_base_url + "modules/eo_clearcache/ajax/ajaxDynamic.php",
+	    type: 'GET',
+	    data: {
+	        page_name: eo_cc_page_name,
+	        id_lang: eo_cc_id_lang,
+	        id_product: eo_cc_id_product,
+	        id_category: eo_cc_id_category,
+	        id_cms: eo_cc_id_cms,
+	        ids_product: eo_cc_filtered_product_ids.length !== 0 ? eo_cc_filtered_product_ids.join(",") : null,
+	        timestamp: new Date().getTime()
+	    },
+	    dataType: 'json',
+	    complete: function (data) {
+	        evaluateVarnishAjax(data);
+	        // Flag to signal the eo_clearcache ajax call has ended
+	        eoClearCacheLoaded = true;
+	    }
+	});
+}, 1);
+
+function evaluateVarnishAjax(data) {
+	if (typeof evaluationDynamicAjax === 'undefined') {
+		// Sometimes, if JS is defered on footer, the ajax is faster than the browser reaching the footer,
+		// so evaluationDynamicAjax will be undefined
+		// in that case, retry in 200 ms
+		setTimeout(function(){ evaluateVarnishAjax(data); }, 200);
+	} else {
+		// Evaluate
+		eval(evaluationDynamicAjax);
+        if ( $( "#eoJsDynamic" ).length ) {
+        	eval($('#eoJsDynamic').val());
+		}
+        // If the DOMContentLoaded has been captured, release it
+        if (typeof eoClearCacheCapturedDOMContentLoadedEvent !== 'undefined') {
+            document.dispatchEvent(eoClearCacheCapturedDOMContentLoadedEvent);
+            eoClearCacheCapturedDOMContentLoadedEvent = undefined;
+	        console.log("eo_clearcache - document loaded relaunched after ajax dynamic");
+        }
+	}	
+}

@@ -1,0 +1,183 @@
+/**
+ *
+ * cekome search Front Office Feature / Back Office Feature
+ *
+ * @category search_filter / search_filter
+ * @author cekome.com <prestashop@cekome.com>
+ * @copyright Cekome module 2016 - Mohamed Ghellouci
+ * @version 1.0.0
+ *
+ *
+ *
+ ********************************
+ **         Cekome search       *
+ **   http://www.cekome.com     *
+ ********************************
+ * +
+ * + Cekome search - filter by category
+ * + Languages: EN, FR
+ * + PS version: 1.5, 1.6, 1.7
+ *
+ ****/
+
+var instantSearchQueries = [];
+$(document).ready(function () {
+    /* TODO floodding server */
+    /*
+    if (typeof instantsearch != 'undefined' && instantsearch)		
+        $("#search_query_" + blocksearch_type).keyup(function(){
+            if($(this).val().length > 4){
+                stopInstantSearchQueries();
+                instantSearchQuery = $.ajax({
+                    url: search_url + '?rand=' + new Date().getTime(),
+                    data: {
+                        instantSearch: 1,
+                        id_lang: id_lang,
+                        q: $(this).val()
+                    },
+                    dataType: 'html',
+                    type: 'POST',
+                    headers: { "cache-control": "no-cache" },
+                    async: true,
+                    cache: false,
+                    success: function(data){
+                        if($("#search_query_" + blocksearch_type).val().length > 0)
+                        {
+                            tryToCloseInstantSearch();
+                            $('#center_column').attr('id', 'old_center_column');
+                            $('#old_center_column').after('<div id="center_column" class="' + $('#old_center_column').attr('class') + '">'+data+'</div>');
+                            $('#old_center_column').hide();
+                            // Button override
+                            ajaxCart.overrideButtonsInThePage();
+                            $("#instant_search_results a.close").click(function() {
+                                $("#search_query_" + blocksearch_type).val('');
+                                return tryToCloseInstantSearch();
+                            });
+                            return false;
+                        }
+                        else
+                            tryToCloseInstantSearch();
+                    }
+                });
+                instantSearchQueries.push(instantSearchQuery);
+            }
+            else
+                tryToCloseInstantSearch();
+        });
+    /*	*/
+    /* TODO Ids aa blocksearch_type need to be removed*/
+    var width_ac_results = $("#search_query_" + blocksearch_type).parent('form').width();
+    if (typeof ajaxsearch != 'undefined' && ajaxsearch && typeof blocksearch_type !== 'undefined' && blocksearch_type)
+        $("#search_query_" + blocksearch_type).autocomplete(
+            search_url,
+            {
+                minChars: 3,
+                max: 5,
+                width: (width_ac_results > 0 ? width_ac_results : 500),
+                selectFirst: false,
+                scroll: false,
+                cacheLength: 0,
+                dataType: "json",
+                highlight: false,
+                formatItem: function (data, i, max, value, term) {
+                    return value;
+                },
+                parse: function (data) {
+                    //console.log(data);
+                    var mytab = new Array();
+                    if (data.length == 0) {
+                        return [];
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        if (i > 3) {
+                            break;
+                        }
+
+                        var reduction = 0;
+                        var pname = data[i].pname.toLowerCase();
+
+                        if (pname.indexOf('turbo') !== -1) {
+                            reduction = 5;
+                        } else if (pname.indexOf('pompe') !== -1) {
+                            reduction = 5;
+                        } else if (pname.indexOf('injecteur') !== -1) {
+                            reduction = 3;
+                        }
+
+                        mytab[mytab.length] = {
+                            data: data[i],
+                            value:
+                                '<div class="row no-gutters align-items-center">' +
+                                    '<div class="col-auto position-relative">' +
+                                        '<img src="' + data[i].pthumb + '" width="100"/>' +
+                                        (reduction > 0 ? '<span class="sale_percentage">-' + reduction + '%</span>' : '') +
+                                    '</div>' +
+                                    '<div class="col pl-3">' +
+                                        '<div class="cname">' + data[i].cname + '</div>' +
+                                        '<div class="pname">' + data[i].pname +' '+ data[i].reference +' '+ data[i].supplier_name +'</div>' +
+                                    '</div>' +
+                                '</div>'
+                        };
+                    }
+                    mytab[mytab.length] = { data: { product_link: '#' }, value: '<button class="submitSearchTop btn btn-primary btn-block" type="submit"><span>' + textAllSearch + '</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.42 19.311"><path d="m20.089 17.568-4.69-4.223a.979.979 0 0 0-.405-.21A8.282 8.282 0 1 0 2.74 14.437a8.282 8.282 0 0 0 11.069.012c.055.14.132.273.252.381l4.69 4.223a1 1 0 0 0 1.338-1.486zM4.079 12.95a6.283 6.283 0 0 1-.466-8.873 6.29 6.29 0 0 1 8.873-.465 6.283 6.283 0 0 1-8.408 9.338z" fill="#fff"></path></svg></button>' }
+                    return mytab;
+                },
+                extraParams: {
+                    ajaxSearch: 1,
+                    category: function () { return $(".cat_select").val(); },
+                    id_lang: id_lang
+                }
+            }
+        )
+        .result(function (event, data, formatted) {
+            $('#search_query_' + blocksearch_type).val(data.pname);
+            document.location.href = data.product_link;
+    });
+
+    // Gestion du clic sur le bouton "Voir tous les résultats"
+    $('body').on('mousedown', '.submitSearchTop', function(e) {
+        e.preventDefault();
+
+        // On capture la valeur du champ au moment du clic
+        var query = $.trim($('#search_query_top').val());
+        if (!query.length) return false;
+
+        // Ferme la liste immédiatement
+        $('.ac_results').hide();
+
+        // Délai court pour laisser le plugin finir son event
+        setTimeout(function() {
+            var $form = $('#searchbox');
+            var action = $form.attr('action') || '/recherche';
+            var controller = $form.find('input[name="controller"]').val() || 'search';
+            var orderby = $form.find('input[name="orderby"]').val() || 'position';
+            var orderway = $form.find('input[name="orderway"]').val() || 'desc';
+
+            // Construction de l'URL complète
+            var url = window.location.origin
+                + action.replace(/^https?:\/\/[^\/]+/, '')
+                + '?controller='   + encodeURIComponent(controller)
+                + '&orderby='      + encodeURIComponent(orderby)
+                + '&orderway='     + encodeURIComponent(orderway)
+                + '&search_query=' + encodeURIComponent(query)
+                + '&submit_search=';
+
+            window.location.href = url;
+        }, 100);
+    });
+});
+
+function tryToCloseInstantSearch() {
+    if ($('#old_center_column').length > 0) {
+        $('#center_column').remove();
+        $('#old_center_column').attr('id', 'center_column');
+        $('#center_column').show();
+        return false;
+    }
+}
+
+function stopInstantSearchQueries() {
+    for (i = 0; i < instantSearchQueries.length; i++)
+        instantSearchQueries[i].abort();
+    instantSearchQueries = new Array();
+}

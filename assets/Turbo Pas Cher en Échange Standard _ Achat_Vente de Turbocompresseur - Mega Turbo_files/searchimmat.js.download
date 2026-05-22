@@ -1,0 +1,400 @@
+$(document).ready(function () {
+   function showAlert(message, type) {
+       // Vérifier si le conteneur #alert-container est présent dans le DOM
+       if ($('#alert-container').length) {
+           // Si le conteneur est présent, ajouter l'alerte dans ce conteneur
+           var alertBox = '<div class="text-' + type + ' fade show" role="alert">' +
+               message +
+               '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+               '</div>';
+           $('#alert-container').html(alertBox);
+       } else {
+           // Si le conteneur n'est pas présent, utiliser l'alerte native du navigateur
+           alert(message);
+       }
+   }
+
+
+    $('.license_plate button').on('click', function (e) {
+        e.preventDefault();
+
+        const button = $(this);
+        const loader = button.find('svg.loader');
+        const loupe = button.find('svg').not('.loader');
+        const input = $('#searchplate');
+
+        const inputValueRaw = input.val().trim();
+        const country = input.data('country') ? input.data('country').toLowerCase() : 'fr';
+        let inputValue = '';
+
+        // Gestion multi-pays
+        var plateHandlers = {
+            de: function () {
+                var hsnValue = $('#searchplate-hsn').val().trim();
+                var tsnValue = $('#searchplate-tsn').val().trim();
+
+                if (hsnValue === '' || tsnValue === '') {
+                    showAlert(translationsNotifPlate.missingHsnTsn, 'warning');
+                    return false;
+                }
+                return hsnValue + '-' + tsnValue;
+            },
+            fr: function () {
+                var val = $('#searchplate').val().trim();
+                if (val === '') {
+                    showAlert(translationsNotifPlate.emptyPlate, 'warning');
+                    return false;
+                }
+                return val;
+            },
+            default: function () {
+                var val = $('#searchplate').val().trim();
+                if (val === '') {
+                    showAlert(translationsNotifPlate.emptyPlate, 'warning');
+                    return false;
+                }
+                return val;
+            }
+        };
+
+        inputValue = (plateHandlers[country] || plateHandlers.default)();
+        if (!inputValue) return false;
+
+        inputValue = inputValue.toUpperCase();
+
+        button.prop('disabled', true);
+        loader.show();
+        loupe.hide();
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6Le1DNIqAAAAADBZznYBftaJ-KAye-seBMw8iqMy', { action: 'search' }).then(function(token) {
+                $('#recaptcha_token').val(token);
+                
+                $.ajax({
+                    type: 'POST',
+                    url: ajax_url,
+                    xhrFields: { withCredentials: true },
+                    data: {
+                        ajax: true,
+                        searchplate: inputValue,
+                        lang: country,
+                        recaptcha_token: token,
+                        action: 'searchPlateVRM'
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        //console.log(response);
+
+                        let id_car = null;
+                        if (response.success === true) {
+                            if (Array.isArray(response.resultat) && response.resultat.length > 0) {
+                                id_car = response.resultat[0].carid;
+                            } else if (response.id_car) {
+                                id_car = response.id_car;
+                            }
+
+                            if (id_car && id_car != 0) {
+                                window.location.href = response.url;
+                            } else {
+                                showAlert(translationsNotifPlate?.errorPlate || 'Erreur plaque incorrecte.', 'danger');
+                            }
+                        } else {
+                            showAlert(response.message || translationsNotifPlate?.errorPlate || 'Erreur lors de la recherche.', 'warning');
+                        }
+                    },
+                    error: function () {
+                        showAlert(translationsNotifPlate?.errorPlate || 'Erreur serveur, veuillez réessayer.', 'danger');
+                    },
+                    complete: function () {
+                        button.prop('disabled', false);
+                        loader.hide();
+                        loupe.show();
+                    }
+                });
+            });
+        });
+    });
+
+
+
+    // Autres interactions de l'interface utilisateur
+    $('#change-car').click(function (e) {
+        e.preventDefault();
+
+        // Afficher #car-select-plate
+        $('#car-select-plate, #car-select-plate-home').show();
+
+        // Masquer les autres éléments si nécessaire
+        $('#car-select-home, #car-select').hide();
+    });
+
+    // Lorsque vous cliquez sur l'icône de fermeture dans #car-select-list-container
+    $('#car-select-list-container svg.bi.bi-x-circle-fill, #car-select-plate-container svg.bi.bi-x-circle-fill').click(function (e) {
+        e.preventDefault();
+
+        // Masquer #car-select-plate
+        $('#car-select-plate:not(.car-select-plate-mini), #car-select-plate-home:not(.car-select-plate-mini)').hide();
+
+        // Afficher les autres éléments si nécessaire
+        $('#car-select-home, #car-select').show();
+    });
+
+    $('#sendMailEstimate').on('click', function(e) {
+        e.preventDefault();
+        showModal();
+    });
+
+    // Fonction pour afficher la modal
+    function showModal() {
+        $('#modalSearchImmat').modal('show');
+    }
+
+    $("#more-info-car").on("click", function() {
+        $("#vehicule-detail").slideToggle(function() {
+            // Ce callback s'exécute après le toggle de l'élément
+            var isVisible = $("#vehicule-detail").is(":visible");
+            
+            // Change le texte du bouton en fonction de la visibilité de l'élément
+            var buttonText = isVisible ? "Voir moins" : "Voir plus";
+            $("#more-info-car").text(buttonText);
+        });
+    });
+
+    $(document).ready(function() {
+        $('#vehicleSelect').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            var vehicleData = selectedOption.data('vehicle');
+
+            // Convertir la chaîne JSON en objet JavaScript
+            if (vehicleData && typeof vehicleData === 'string') {
+                try {
+                    vehicleData = JSON.parse(vehicleData);
+                } catch (e) {
+                    console.error("Erreur de parsing JSON: ", e);
+                    return;
+                }
+            }
+
+            if (vehicleData) {
+                $('#model').text(vehicleData.carname);
+                $('#plate').text(vehicleData.plate);
+                $('#version').text(vehicleData.version);
+                $('#energy').text(vehicleData.energy);
+                $('#power').text(vehicleData.engineoutputinhp + " HP");
+                $('#enginecapacity').text(vehicleData.enginecapacity + " cm³");
+                $('#colour').text(vehicleData.colour);
+                $('#gearboxtype').text(vehicleData.gearboxtype);
+                $('#firstusingdate').text(vehicleData.firstusingdate);
+                $('#vin').text(vehicleData.vin);
+                $('#euronormstandardized').text(vehicleData.euronormstandardized);
+                $('#id_order').text(vehicleData.id_order);
+
+                // Lien vers la commande
+                $('#orderLink').attr('href', 'index.php?controller=order-detail&id_order=' + vehicleData.id_order);
+
+                $('#vehicleDetails').show();
+            } else {
+                $('#vehicleDetails').hide();
+            }
+        });
+    });
+
+   $('#title-mask h2').on('click', function() {
+       var $productList = $('#category-bottom #product_list');
+
+       if ($productList.is(':visible')) {
+           // Si l'élément est visible, on utilise slideUp pour le masquer
+           $productList.slideUp(500, function() {
+               // Une fois masqué, on fait défiler vers le haut de la page
+               $('html, body').animate({
+                   scrollTop: 0
+               }, 500);
+           });
+       } else {
+           // Appliquer display inline-flex et utiliser slideDown pour afficher l'élément
+           $productList.css('display', 'inline-flex').hide().slideDown(500, function() {
+               // Obtenir la hauteur de .header-container et #car-select-plate-home
+               var headerHeight = $('.header-container').outerHeight();
+               var carSelectHeight = $('#car-select-plate-home').outerHeight();
+
+               // Faire défiler la page jusqu'à l'élément après l'animation
+               $('html, body').animate({
+                   scrollTop: $productList.offset().top - headerHeight - carSelectHeight
+               }, 500);
+           });
+       }
+   });
+});
+
+// Variable globale pour stocker toutes les données
+var vehiclesData = [];
+
+function showVehicleSelectionModal(vehicles, plate) {
+    vehiclesData = vehicles; // on garde les données complètes
+
+    $('#vehicle-selection-modal, .vehicle-overlay').remove();
+
+    var overlay = $('<div class="vehicle-overlay"></div>');
+    var modal = $(`
+        <div id="vehicle-selection-modal">
+            <div class="vehicle-header">
+                <div class="h3">${translationsNotifPlate.multiple}</div>
+                <button id="close-vehicle-modal">&times;</button>
+            </div>
+            <div id="vehicle-list"></div>
+        </div>
+    `);
+
+    $('body').append(overlay, modal);
+
+    function val(v) {
+        return (v !== undefined && v !== null && v !== '') ? v : 'N.C';
+    }
+    function formatDateShort(yyyymm) {
+        if (!yyyymm || yyyymm.length !== 6) return 'N.C';
+        var year = yyyymm.substring(2, 4);
+        var month = yyyymm.substring(4, 6);
+        return month + '/' + year;
+    }
+
+    vehicles.forEach(function (veh, index) {
+        var info = veh.vehicleInformation || {};
+        var engine = (veh.engine && veh.engine.length > 0) ? veh.engine[0] : {};
+
+        var dateStart = formatDateShort(info.salesStartDate);
+        var dateEnd = info.salesEndDate ? formatDateShort(info.salesEndDate) : '-';
+        var dateRange = (dateEnd === '-') ? dateStart + ' -' : dateStart + ' bis ' + dateEnd;
+
+        var card = $(`
+            <div class="vehicle-card" data-index="${index}">
+                <div class="vehicle-title">${val(info.fullModel)}</div>
+                <div class="vehicle-row">
+                    <div><b>${translationsNotifPlate.firstReg || 'Datum der Erstzulassung'} :</b></div>
+                    <div>${dateRange}</div>
+                </div>
+                <div class="vehicle-row">
+                    <div><b>${translationsNotifPlate.engineSize || 'Hubraum'}</b></div>
+                    <div>${val(info.capacityLiters)} L</div>
+                </div>
+                <div class="vehicle-row">
+                    <div><b>${translationsNotifPlate.power || 'Motorleistung'}</b></div>
+                    <div>${val(info.powerKW)} KW, ${val(info.powerHP)} PS</div>
+                </div>
+                <div class="vehicle-row">
+                    <div><b>${translationsNotifPlate.engineSizeCc || 'Hubraum in cm³'}</b></div>
+                    <div>${val(info.ccm)} cm³</div>
+                </div>
+                <div class="vehicle-row">
+                    <div><b>${translationsNotifPlate.engineCode || 'Motorkennbuchstabe'}</b></div>
+                    <div>${val(engine.code)}</div>
+                </div>
+                <button class="select-vehicle-btn" data-index="${index}">
+                    ${translationsNotifPlate.selectVehicle || 'Dieses Fahrzeug auswählen'}
+                </button>
+            </div>
+        `);
+
+        $('#vehicle-list').append(card);
+    });
+
+    $(document).on('click', '.select-vehicle-btn', function () {
+        var selectedIndex = $(this).data('index');
+        var selectedVehicle = vehiclesData[selectedIndex]; 
+
+        console.log(selectedIndex);
+        console.log(selectedVehicle);
+        console.log(vehiclesData);
+
+        $.ajax({
+            type: 'POST',
+            url: ajax_url,
+            data: {
+                ajax: true,
+                action: 'saveSelectedVehicle',
+                plate: plate,
+                vehicle: JSON.stringify(selectedVehicle),
+                allVehicles: JSON.stringify(vehiclesData)
+            },
+            dataType: 'json',
+            success: function (saveResponse) {
+                console.log(saveResponse);
+                if (saveResponse.success) {
+                    closeDrawer();
+                    window.location.href = saveResponse.url;
+                } else {
+                    showAlert(saveResponse.message || 'Erreur inconnue', 'danger');
+                }
+            }
+        });
+    });
+
+
+    function closeDrawer() {
+        modal.removeClass('open');
+        overlay.fadeOut(200, function () {
+            overlay.remove();
+            modal.remove();
+        });
+    }
+
+    $('#close-vehicle-modal, .vehicle-overlay').on('click', closeDrawer);
+
+    overlay.fadeIn(200);
+    setTimeout(function () { modal.addClass('open'); }, 10);
+}
+
+$(function() {
+    $('.btn-edit-vehicle').on('click', function(e) {
+        e.preventDefault();
+
+        var $input = $('#searchplate');
+
+        // vider le champ
+        $input.val('');
+
+        // focus sur le champ
+        $input.focus();
+
+        // scroll fluide vers le champ
+        $('html, body').animate({
+            scrollTop: $input.offset().top
+        }, 600);
+    });
+});
+
+
+$(document).ready(function() {
+    var $categoryBottom = $('#category-bottom');
+    var $content = $categoryBottom.find('.toggle-content');
+
+    $content.hide();
+    $categoryBottom.removeClass('open');
+
+    $categoryBottom.find('h2.toggle-title').on('click', function() {
+        if ($categoryBottom.hasClass('open')) {
+            $content.slideUp(300);
+            $categoryBottom.removeClass('open');
+            $('html, body').animate({ scrollTop: 0 }, 600);
+        } else {
+            $content.slideDown(300);
+            $categoryBottom.addClass('open');
+            $('html, body').animate({
+                scrollTop: $categoryBottom.offset().top - 80
+            }, 600);
+        }
+    });
+});
+
+$(document).ready(function() {
+    // Toggle marque
+    $('.toggle-brand').on('click', function() {
+        var targetId = $(this).data('target');
+        $('#' + targetId).slideToggle(200);
+        $(this).toggleClass('open');
+    });
+    // Toggle modèle
+    $('.toggle-model').on('click', function() {
+        var targetId = $(this).data('target');
+        $('#' + targetId).slideToggle(200);
+        $(this).toggleClass('open');
+    });
+});

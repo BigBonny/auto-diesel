@@ -1,203 +1,222 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Box, Button, Card, CardContent, CardMedia, Chip, Container,
-  Typography, Stack, IconButton
-} from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import VerifiedIcon from "@mui/icons-material/Verified";
 
-const products = [
-  { id: 1, name: "Turbo 1.6 HDI 110 CV",     ref: "753420-5006S", price: 210, original: 450, brand: "Peugeot", discount: 53, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=600&q=80", featured: true },
-  { id: 2, name: "Turbo 1.9 DCI 120 CV",      ref: "708639-5010S", price: 200, original: 420, brand: "Renault", discount: 52, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" },
-  { id: 3, name: "Turbo 2.0 TDI 140 CV",      ref: "724930-5009S", price: 210, original: 480, brand: "Audi",    discount: 56, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80" },
-  { id: 4, name: "Turbo 320d 163 CV",          ref: "49135-05671",  price: 320, original: 680, brand: "BMW",     discount: 53, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80" },
-  { id: 5, name: "Turbo 2.0 TDI 136 CV",      ref: "724930-5010S", price: 210, original: 450, brand: "VW",      discount: 53, cat: "turbos",     stock: false, img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80" },
-  { id: 6, name: "Turbo 1.6 HDi 90 CV",       ref: "49173-07508",  price: 185, original: 420, brand: "Peugeot", discount: 56, cat: "turbos",     stock: true,  img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" },
-  { id: 7, name: "Injecteur HDi 136 CV",       ref: "756047-5005S", price: 230, original: 490, brand: "Peugeot", discount: 53, cat: "injecteurs", stock: true,  img: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80" },
-  { id: 8, name: "Injecteur Panamera",        ref: "49389-01310",  price: 2106,original:3500, brand: "Porsche", discount: 40, cat: "injecteurs", stock: true,  img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80" },
+const NAVY   = "#274554";
+const ORANGE = "#ff5700";
+const GREEN  = "#86C82F";
+
+type Product = {
+  id: number; name: string; price: number; original: number;
+  img: string; brand?: string; availability: "24/48H" | "2-3 jours";
+};
+
+const turbos: Product[] = [
+  { id: 3912,  name: "Turbo pour Volvo V40 1.9 TD 90 CV - 92 CV Réf: 454204-0002",
+    price: 379.00, original: 473.75, img: "/assets/turbo-pour-volvo-v40-19-td-90-cv-92-cv-ref-454204-0002.jpg",
+    brand: "/assets/13.jpg", availability: "24/48H" },
+  { id: 32136, name: "Turbo pour BMW série 5 (F10) 525 d 218 CV",
+    price: 549.00, original: 686.25, img: "/assets/turbo-pour-bmw-serie-5-f10-525-d-218-cv-54359980060-borgwarner.jpg",
+    brand: "/assets/16.jpg", availability: "24/48H" },
+  { id: 33061, name: "Turbo pour Citroën DS3 Décapotable 1.6 THP 150 CV",
+    price: 489.00, original: 611.25, img: "/assets/turbo-pour-citroen-ds3-decapotable-16-thp-150-150-cv-53039880425-borgwarn.jpg",
+    brand: "/assets/16.jpg", availability: "24/48H" },
+  { id: 37329, name: "Turbo pour Opel COMBO (X12) 1.6 CDTi 105 CV",
+    price: 359.00, original: 448.75, img: "/assets/turbo-pour-opel-combo-x12-16-cdti-105-cv-807068-5002s-garrett.jpg",
+    brand: "/assets/15.jpg", availability: "2-3 jours" },
+  { id: 3511,  name: "Turbo pour Volkswagen Industriemotor 1.9 TD 102 CV Réf: 5439 988 0085",
+    price: 419.00, original: 523.75, img: "/assets/turbo-pour-volkswagen-industriemotor-19-td-102-cv-ref-5439-988-0085.jpg",
+    availability: "24/48H" },
+  { id: 36006, name: "Turbo pour Lancia DEDRA SW 1.9 TDS 90 CV",
+    price: 339.00, original: 423.75, img: "/assets/turbo-desktop.jpg",
+    brand: "/assets/16.jpg", availability: "2-3 jours" },
 ];
 
-const cats = [
-  { id: "all",        label: "Tout" },
-  { id: "turbos",     label: "Turbos" },
-  { id: "injecteurs", label: "Injecteurs" },
+const injecteurs: Product[] = [
+  { id: 12292, name: "Injecteur pour audi q5 2.0 TFSI hybrid quattro 211 cv - 026150001A - Bosch",
+    price: 234.50, original: 293.12, img: "/assets/injecteur-pour-audi-q5-20-tfsi-hybrid-quattro-211-cv-026150001a.jpg",
+    brand: "/assets/1.jpg", availability: "24/48H" },
+  { id: 47302, name: "Injecteur pour MERCEDES-BENZ CLASSE E (VF210) E 270 CDI 170 CV",
+    price: 178.32, original: 222.90, img: "/assets/injecteur-pour-mercedes-benz-classe-e-vf210-e-270-cdi-170-cv-0445110121-b.jpg",
+    brand: "/assets/1.jpg", availability: "2-3 jours" },
+  { id: 19454, name: "Injecteur pour Toyota Yaris 1.4 D-4D 75 CV",
+    price: 194.02, original: 242.53, img: "/assets/injecteur-pour-toyota-yaris-i-14-d-4d-75-cv-0445116009.jpg",
+    brand: "/assets/1.jpg", availability: "24/48H" },
+  { id: 17898, name: "Injecteur pour Ford transit courier b460 1.5 TDCi 95 CV",
+    price: 144.53, original: 180.66, img: "/assets/injecteur-pour-ford-transit-courier-b460-15-tdci-95-cv-0445110488.jpg",
+    brand: "/assets/1.jpg", availability: "24/48H" },
+  { id: 15479, name: "Injecteur pour BMW série 4 Coupé (F32, F82) 418 d 150 CV",
+    price: 168.42, original: 210.53, img: "/assets/injecteur-desktop.jpg",
+    brand: "/assets/1.jpg", availability: "2-3 jours" },
+  { id: 52617, name: "Injecteur pour Skoda KODIAQ 1 2.0 TDI 4x4 200 CV",
+    price: 151.32, original: 189.15, img: "/assets/injecteur-desktop.jpg",
+    brand: "/assets/1.jpg", availability: "2-3 jours" },
 ];
 
-export default function Products() {
-  const [active, setActive] = useState("all");
-  const filtered = products.filter((p) => active === "all" || p.cat === active);
+function ProductCard({ p }: { p: Product }) {
+  const discount = Math.round((1 - p.price / p.original) * 100);
+  return (
+    <div className="product-card" style={{
+      background: "#fff", border: "1px solid #9eaeac", borderRadius: 20,
+      display: "flex", flexDirection: "column",
+      padding: 15, position: "relative",
+    }}>
+      {/* Sale badge */}
+      <div style={{
+        position: "absolute", top: -11, right: -11, zIndex: 5,
+        width: 73, height: 73, color: "#fff", textAlign: "center",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 20, fontWeight: 700,
+        background: "radial-gradient(circle, #ff5700 0%, #ff5700 55%, transparent 55%)",
+      }}>
+        -{discount}%
+      </div>
+
+      {/* Image */}
+      <div style={{ position: "relative", minHeight: 245, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {p.brand && (
+          <img src={p.brand} alt="" style={{ position: "absolute", top: 5, left: 5, maxWidth: 100, height: "auto", objectFit: "contain", zIndex: 2 }} />
+        )}
+        <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: 220, objectFit: "contain" }} />
+      </div>
+
+      {/* Body */}
+      <div style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+        <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: NAVY, lineHeight: 1.2, margin: "0 0 20px" }}>
+          <a href="#" style={{ color: "inherit", textDecoration: "none" }}>{p.name}</a>
+        </h3>
+
+        {/* Price */}
+        <div style={{ textAlign: "center", marginBottom: 25 }}>
+          <div style={{ fontSize: 25, fontWeight: 900, color: ORANGE, display: "block" }}>
+            {p.price.toFixed(2).replace(".", ",")} €
+          </div>
+          <div style={{ fontSize: 18, color: "#9eaeac", textDecoration: "line-through" }}>
+            {p.original.toFixed(2).replace(".", ",")} €
+          </div>
+        </div>
+
+        {/* Add to cart */}
+        <div style={{ textAlign: "center", marginBottom: 22 }}>
+          <button style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            gap: 16, padding: "11px 25px", borderRadius: 999,
+            fontSize: "1.25rem", fontWeight: 700, lineHeight: 1.5,
+            color: "#fff", backgroundColor: ORANGE, border: "1px solid #ff5700",
+            cursor: "pointer", textTransform: "uppercase", fontFamily: "inherit",
+            transition: "background .2s, color .2s",
+          }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgb(217,74,0)")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = ORANGE)}
+          >
+            <span className="label">Ajouter au panier</span>
+            <span className="icon">
+              <img src="/assets/icon-cart.svg" alt="" style={{ width: 20, height: 20, filter: "brightness(0) invert(1)", display: "block" }} />
+            </span>
+          </button>
+        </div>
+
+        {/* Availability */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, color: GREEN, fontWeight: 600, marginBottom: 12 }}>
+          <svg width="20" height="22" viewBox="0 0 27.563 30.6945" fill="none">
+            <path d="M13.78 0C13.61 0 13.46 0.04 13.32 0.12L0.44 7.77C0.17 7.93 0 8.23 0 8.54L0 22.15C0 22.46 0.17 22.76 0.44 22.92L13.32 30.56C13.46 30.65 13.61 30.69 13.78 30.69C13.94 30.69 14.1 30.65 14.24 30.56L27.12 22.92C27.39 22.76 27.56 22.46 27.56 22.15L27.56 8.57C27.56 8.41 27.52 8.25 27.45 8.11C27.37 7.97 27.26 7.85 27.12 7.77L14.24 0.12C14.1 0.04 13.94 0 13.78 0ZM13.78 1.95L24.89 8.54L22.31 10.07L11.2 3.47L13.78 1.95Z" fill={GREEN} />
+          </svg>
+          <span style={{ fontSize: "0.85rem" }}>
+            Livraison en {p.availability}
+          </span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        display: "flex", justifyContent: "center", alignItems: "center",
+        gap: 20, fontSize: 13, lineHeight: "15px", fontWeight: 700,
+        color: NAVY, textTransform: "uppercase", textAlign: "center",
+        paddingTop: 12, borderTop: "1px solid #e8ecef",
+      }}>
+        <div>
+          <img src="/assets/paiement-icon.svg" alt="" style={{ display: "block", margin: "0 auto 7px", width: 18, height: 18 }} />
+          <span>Paiement en <span style={{ color: ORANGE }}>x3 x4</span></span>
+          <strong style={{ marginTop: 2, display: "block", color: "#9eaeac" }}>sans frais</strong>
+        </div>
+        <div>
+          <img src="/assets/livraison-icon.svg" alt="" style={{ display: "block", margin: "0 auto 7px", width: 18, height: 18 }} />
+          <span>Livraison</span>
+          <strong style={{ marginTop: 2, display: "block", color: "#9eaeac" }}>24h/48h</strong>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductSlider({ products, sliderId }: { products: Product[]; sliderId: string }) {
+  const scroll = (dir: "left" | "right") => {
+    const el = document.getElementById(sliderId);
+    if (!el) return;
+    el.scrollBy({ left: dir === "right" ? 380 : -380, behavior: "smooth" });
+  };
 
   return (
-    <Box component="section" id="products" sx={{ bgcolor: "white", py: { xs: 10, md: 16 }, position: "relative", overflow: "hidden" }}>
-      {/* Decorative bg */}
-      <Box sx={{ position: "absolute", top: "10%", left: "-10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(34,197,94,0.08), transparent 70%)", pointerEvents: "none" }} />
+    <div style={{ position: "relative" }}>
+      <button onClick={() => scroll("left")} className="slider-arrow" style={arrowStyle("left")}>‹</button>
+      <div id={sliderId} style={{
+        display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8,
+        scrollbarWidth: "none", msOverflowStyle: "none", scrollSnapType: "x mandatory",
+      }}>
+        {products.map((p) => (
+          <div key={p.id} style={{ width: 380, flexShrink: 0, scrollSnapAlign: "start" }}>
+            <ProductCard p={p} />
+          </div>
+        ))}
+      </div>
+      <button onClick={() => scroll("right")} className="slider-arrow" style={arrowStyle("right")}>›</button>
+    </div>
+  );
+}
 
-      <Container maxWidth="xl" sx={{ position: "relative" }}>
-        {/* Header */}
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, alignItems: { lg: "flex-end" }, justifyContent: "space-between", gap: 4, mb: { xs: 6, md: 10 } }}>
-          <Box sx={{ maxWidth: 720 }}>
-            <Stack direction="row" sx={{ alignItems: "center", gap: 1.5, mb: 3 }}>
-              <Box sx={{ width: 40, height: 1, bgcolor: "#16a34a" }} />
-              <Typography sx={{ fontSize: "0.75rem", fontWeight: 700, color: "#16a34a", letterSpacing: "0.15em", textTransform: "uppercase" }}>Catalogue</Typography>
-            </Stack>
-            <Typography variant="h2" sx={{ fontSize: { xs: "2.5rem", md: "4rem", lg: "5rem" }, fontWeight: 900, lineHeight: 1.0, color: "#0f172a", letterSpacing: "-0.03em", mb: 2 }}>
-              Nos pièces les plus{" "}
-              <Box component="span" sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 400, color: "#16a34a" }}>
-                demandées
-              </Box>
-            </Typography>
-            <Typography sx={{ color: "text.secondary", fontSize: "1.05rem", lineHeight: 1.7, maxWidth: 540 }}>
-              Sélection des best-sellers de notre catalogue de 50 000+ références.
-              Toutes nos pièces sont testées sur banc et garanties 2 ans.
-            </Typography>
-          </Box>
+const arrowStyle = (side: "left" | "right"): React.CSSProperties => ({
+  position: "absolute", [side]: -18, top: "50%", transform: "translateY(-50%)",
+  zIndex: 10, background: "#fff", border: "1px solid #e8ecef", borderRadius: "50%",
+  width: 40, height: 40, cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+  color: NAVY, fontSize: "1.5rem", fontWeight: 700, lineHeight: 1, padding: 0,
+});
 
-          {/* Category pills */}
-          <Stack direction="row" spacing={1} sx={{ bgcolor: "#f8fafc", borderRadius: 99, p: 0.75, border: "1px solid #e2e8f0" }}>
-            {cats.map((c) => (
-              <Box
-                key={c.id}
-                onClick={() => setActive(c.id)}
-                sx={{
-                  px: 2.5, py: 1.25, borderRadius: 99,
-                  fontSize: "0.85rem", fontWeight: 700, cursor: "pointer", userSelect: "none",
-                  color: active === c.id ? "white" : "#475569",
-                  bgcolor: active === c.id ? "#0f172a" : "transparent",
-                  transition: "all 0.25s",
-                  "&:hover": { color: active === c.id ? "white" : "#0f172a" },
-                }}
-              >
-                {c.label}
-              </Box>
-            ))}
-          </Stack>
-        </Box>
+export default function Products() {
+  return (
+    <>
+      {/* Turbos */}
+      <section id="products" style={{ background: "#f4f6f8", padding: "32px 0 32px" }}>
+        <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
+          <p style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "1.6rem", fontWeight: 800, color: NAVY, margin: "0 0 28px",
+            display: "flex", alignItems: "center", gap: 10,
+          }}>
+            <img src="/assets/illu-turbo.svg" alt="" width={48} height={48} />
+            <span>Turbos</span>
+          </p>
+          <ProductSlider products={turbos} sliderId="turbos-slider" />
+        </div>
+      </section>
 
-        {/* Product grid */}
-        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }, gap: 3 }}>
-          <AnimatePresence mode="popLayout">
-            {filtered.map((p, i) => (
-              <motion.div
-                key={p.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
-              >
-                <Card
-                  elevation={0}
-                  sx={{
-                    height: "100%", borderRadius: 4, overflow: "hidden",
-                    bgcolor: "#fafaf9", border: "1px solid transparent",
-                    transition: "all 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
-                    cursor: "pointer",
-                    "&:hover": {
-                      borderColor: "#dcfce7",
-                      boxShadow: "0 24px 60px rgba(20,83,45,0.12)",
-                      transform: "translateY(-6px)",
-                      bgcolor: "white",
-                    },
-                    "&:hover .product-img": { transform: "scale(1.08) rotate(-2deg)" },
-                    "&:hover .product-cta": { bgcolor: "#16a34a" },
-                  }}
-                >
-                  {/* Image area */}
-                  <Box sx={{ position: "relative", aspectRatio: "1", overflow: "hidden", bgcolor: "#f1f5f9" }}>
-                    <CardMedia
-                      component="img"
-                      image={p.img}
-                      alt={p.name}
-                      className="product-img"
-                      sx={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)" }}
-                    />
-                    {/* Top chips row */}
-                    <Stack direction="row" sx={{ position: "absolute", top: 12, left: 12, right: 12, justifyContent: "space-between" }}>
-                      <Chip
-                        label={`−${p.discount}%`}
-                        size="small"
-                        icon={<LocalOfferIcon sx={{ fontSize: "0.85rem !important" }} />}
-                        sx={{ bgcolor: "#0f172a", color: "white", fontWeight: 900, fontSize: "0.72rem", height: 26 }}
-                      />
-                      <IconButton size="small" sx={{ bgcolor: "white", width: 32, height: 32, "&:hover": { bgcolor: "white", color: "#ef4444" } }}>
-                        <FavoriteBorderIcon sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    </Stack>
-                    {!p.stock && (
-                      <Chip label="Sur commande" size="small" sx={{ position: "absolute", bottom: 12, left: 12, bgcolor: "rgba(245,158,11,0.95)", color: "white", fontWeight: 700, fontSize: "0.68rem", height: 22 }} />
-                    )}
-                  </Box>
+      {/* Injecteurs */}
+      <section style={{ background: "#f4f6f8", padding: "16px 0 56px" }}>
+        <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
+          <p style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "1.6rem", fontWeight: 800, color: NAVY, margin: "0 0 28px",
+            display: "flex", alignItems: "center", gap: 10,
+          }}>
+            <img src="/assets/illu-injecteur.svg" alt="" width={48} height={48} />
+            <span>Injecteurs</span>
+          </p>
+          <ProductSlider products={injecteurs} sliderId="injecteurs-slider" />
+        </div>
+      </section>
 
-                  <CardContent sx={{ p: 2.5 }}>
-                    <Stack direction="row" sx={{ alignItems: "center", gap: 1, mb: 1 }}>
-                      <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: p.stock ? "#16a34a" : "#f59e0b" }} />
-                      <Typography sx={{ fontSize: "0.7rem", color: "#475569", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>{p.brand}</Typography>
-                      <Typography sx={{ fontSize: "0.7rem", color: "#cbd5e1" }}>•</Typography>
-                      <Typography sx={{ fontSize: "0.7rem", fontFamily: "monospace", color: "#94a3b8" }}>{p.ref}</Typography>
-                    </Stack>
-
-                    <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: "1.25rem", color: "#0f172a", lineHeight: 1.2, mb: 1.5, fontWeight: 400 }}>
-                      {p.name}
-                    </Typography>
-
-                    <Stack direction="row" sx={{ alignItems: "baseline", justifyContent: "space-between", mb: 2 }}>
-                      <Stack direction="row" sx={{ alignItems: "baseline", gap: 1 }}>
-                        <Typography sx={{ fontSize: "1.5rem", fontWeight: 900, color: "#0f172a", lineHeight: 1 }}>{p.price} €</Typography>
-                        <Typography sx={{ fontSize: "0.8rem", color: "#94a3b8", textDecoration: "line-through" }}>{p.original} €</Typography>
-                      </Stack>
-                      <Stack direction="row" sx={{ alignItems: "center", gap: 0.5, color: "#16a34a" }}>
-                        <VerifiedIcon sx={{ fontSize: 13 }} />
-                        <Typography sx={{ fontSize: "0.68rem", fontWeight: 700 }}>2 ans</Typography>
-                      </Stack>
-                    </Stack>
-
-                    <Button
-                      className="product-cta"
-                      variant="contained"
-                      fullWidth
-                      endIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
-                      sx={{
-                        bgcolor: "#0f172a", color: "white",
-                        fontWeight: 700, fontSize: "0.8rem", borderRadius: 99, py: 1.25,
-                        transition: "background-color 0.25s",
-                      }}
-                    >
-                      Voir le produit
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </Box>
-
-        {/* Bottom CTA */}
-        <Box sx={{ textAlign: "center", mt: { xs: 6, md: 10 } }}>
-          <Typography sx={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: { xs: "1.5rem", md: "2.25rem" }, color: "#0f172a", mb: 2 }}>
-            Plus de 50 000 références dans notre catalogue
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            endIcon={<ArrowOutwardIcon />}
-            sx={{
-              bgcolor: "#0f172a", color: "white",
-              fontWeight: 800, px: 4.5, py: 2, borderRadius: 99, fontSize: "0.95rem",
-              boxShadow: "0 12px 28px rgba(15,23,42,0.25)",
-              "&:hover": { bgcolor: "#16a34a", transform: "translateY(-2px)", boxShadow: "0 16px 40px rgba(22,163,74,0.4)" },
-              transition: "all 0.3s",
-            }}
-          >
-            Explorer le catalogue complet
-          </Button>
-        </Box>
-      </Container>
-    </Box>
+      <style jsx global>{`
+        #turbos-slider::-webkit-scrollbar,
+        #injecteurs-slider::-webkit-scrollbar { display: none; }
+      `}</style>
+    </>
   );
 }

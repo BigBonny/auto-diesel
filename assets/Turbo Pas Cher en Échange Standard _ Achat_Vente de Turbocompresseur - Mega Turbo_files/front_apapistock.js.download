@@ -1,0 +1,57 @@
+$(document).ready(function () {
+
+    let refs = [];
+
+    $('.apapistock').each(function () {
+        const ref = $(this).data('ref');
+        const cacheValid = $(this).data('cache-valid');
+
+        if (ref && cacheValid === 0) {
+            refs.push(ref);
+        }
+    });
+
+    //console.log(refs);
+
+    if (!refs.length) {
+        return;
+    }
+
+
+
+    $.ajax({
+        url: apapistockAjaxUrl,
+        type: 'POST',
+        dataType: 'json',
+        timeout: 8000,
+        data: {
+            ajax: 1,
+            action: 'refreshStockGroup',
+            references: refs
+        },
+        success: function (resp) {
+            //console.log(resp);
+
+            if (!resp || !resp.success || !resp.results) {
+                return;
+            }
+
+            $.each(resp.results, function (ref, data) {
+
+                const $el = $('.apapistock[data-ref="' + ref + '"]');
+                if (!$el.length) return;
+
+                // petit délai volontaire (UX)
+                setTimeout(function () {
+
+                    $el.find('.label')
+                        .html(data.label_html)
+                        .css({
+                            opacity: 1
+                        });
+
+                }, 300); // ⏱ 300 ms
+            });
+        }
+    });
+});

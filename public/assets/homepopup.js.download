@@ -1,0 +1,112 @@
+/**
+ * Home Popup Modal JavaScript
+ * Gère l'affichage et la fermeture de la popup avec cookie
+ */
+
+(function() {
+    'use strict';
+
+    // Fonction pour créer/lire un cookie
+    var HomepopupCookie = {
+        set: function(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        },
+        
+        get: function(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+    };
+
+    // Initialisation de la popup
+    function initHomePopup() {
+        var modal = document.getElementById('homePopupModal');
+        
+        if (!modal) {
+            return;
+        }
+
+        var delay = parseInt(modal.getAttribute('data-delay')) || 2000;
+        var cookieDays = parseInt(modal.getAttribute('data-cookie-days')) || 1;
+        var cookieName = 'homePopupShown';
+        
+        // Vérifier si la popup a déjà été affichée
+        if (HomepopupCookie.get(cookieName)) {
+            return;
+        }
+
+        // Fonction pour afficher la popup
+        function showPopup() {
+            modal.style.display = 'flex';
+            setTimeout(function() {
+                modal.classList.add('show');
+            }, 10);
+            
+            // Bloquer le scroll du body
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fonction pour fermer la popup
+        function closePopup() {
+            modal.classList.remove('show');
+            modal.classList.add('hide');
+            
+            setTimeout(function() {
+                modal.style.display = 'none';
+                modal.classList.remove('hide');
+                document.body.style.overflow = '';
+            }, 300);
+            
+            // Définir le cookie
+            HomepopupCookie.set(cookieName, 'true', cookieDays);
+        }
+
+        // Event listeners
+        var closeBtn = modal.querySelector('.home-popup-close');
+        var overlay = modal.querySelector('.home-popup-overlay');
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closePopup();
+            });
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', function() {
+                closePopup();
+            });
+        }
+        
+        // Fermeture avec la touche Échap
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                closePopup();
+            }
+        });
+
+        // Afficher la popup après le délai
+        setTimeout(function() {
+            showPopup();
+        }, delay);
+    }
+
+    // Lancer l'initialisation quand le DOM est prêt
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHomePopup);
+    } else {
+        initHomePopup();
+    }
+})();

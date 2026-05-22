@@ -1,24 +1,26 @@
-import type { Metadata } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+﻿import type { Metadata } from "next";
+import { Open_Sans, Montserrat } from "next/font/google";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-serif", display: "swap" });
+const openSans = Open_Sans({
+  subsets: ["latin"], variable: "--font-body", display: "swap",
+  weight: ["400", "600", "700", "800"],
+});
+const montserrat = Montserrat({
+  subsets: ["latin"], variable: "--font-heading", display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
-  title: "AUTO DIESELS - Turbos & Injecteurs de Confiance",
-  description: "Spécialiste en turbos et injecteurs pour véhicules toutes marques. Qualité, fiabilité et performance pour votre moteur.",
+  title: "Turbo Pas Cher en Échange Standard | Achat/Vente de Turbocompresseur - Mega Turbo",
+  description: "Le Meilleur du Turbo pour Votre Voiture est sur Megaturbo ! Des Références de Turbocompresseur pour Toutes les Marques.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr">
-      <body className={`${inter.variable} ${serif.variable} ${inter.className}`}>
+    <html lang="fr" className={`${openSans.variable} ${montserrat.variable}`}>
+      <body className={openSans.className}>
         <ThemeRegistry>{children}</ThemeRegistry>
       </body>
     </html>

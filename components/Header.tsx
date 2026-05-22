@@ -1,161 +1,179 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect } from "react";
-import {
-  AppBar, Toolbar, Box, Button, IconButton, Drawer, List, ListItem,
-  ListItemButton, ListItemText, Chip, Container, useScrollTrigger, Slide,
-  Menu, MenuItem
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import { useState } from "react";
 
-const navLinks = [
-  { name: "Turbos", href: "#products", items: ["Turbo Renault", "Turbo Peugeot", "Turbo Citroën", "Turbo Audi", "Turbo BMW", "Turbo VW"] },
-  { name: "Injecteurs", href: "#products", items: ["Injecteur Renault", "Injecteur Peugeot", "Injecteur Ford", "Injecteur Toyota"] },
-  { name: "Marques", href: "#brands" },
-  { name: "Actualités", href: "#news" },
-  { name: "Contact", href: "#footer" },
+const NAVY   = "#274554";
+const NAVY2  = "#1f3a47";
+const ORANGE = "#ff5700";
+
+const navItems = [
+  "Turbo", "Injecteur", "Pompe HP à Injection", "Huiles et additifs", "Fabricants", "Blog", "Contact",
 ];
 
 export default function Header() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [anchorEls, setAnchorEls] = useState<Record<string, HTMLElement | null>>({});
-  const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 30 });
-
-  const openMenu = (e: React.MouseEvent<HTMLElement>, name: string) =>
-    setAnchorEls((p) => ({ ...p, [name]: e.currentTarget }));
-  const closeMenu = (name: string) =>
-    setAnchorEls((p) => ({ ...p, [name]: null }));
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <>
-      {/* Announcement bar */}
-      <Box
-        sx={{
-          bgcolor: "#14532d", color: "white", py: 0.75, textAlign: "center",
-          fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.02em",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
-        }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
-          <LocalShippingOutlinedIcon sx={{ fontSize: 14 }} />
-          Livraison gratuite dès 200€
-        </Box>
-        <Box component="span" sx={{ opacity: 0.4 }}>|</Box>
-        <span>Expédition 24-48h</span>
-        <Box component="span" sx={{ opacity: 0.4 }}>|</Box>
-        <span>Garantie 2 ans sur toutes les pièces</span>
-      </Box>
+    <header style={{ position: "sticky", top: 0, zIndex: 1000 }}>
+      {/* Top promo banner — ORANGE */}
+      <div style={{
+        background: ORANGE, color: "#fff", textAlign: "center",
+        padding: "8px 16px", fontSize: "1.1rem", letterSpacing: "0.04em",
+      }}>
+        <strong style={{ textTransform: "uppercase", fontWeight: 800 }}>Offre spéciale : 5% de remise</strong>{" "}
+        <span style={{ opacity: 0.95 }}>sur votre 1ère commande (hors packs d'injecteurs)</span>
+      </div>
 
-      <AppBar
-        position="sticky"
-        elevation={trigger ? 2 : 0}
-        sx={{
-          bgcolor: "white",
-          borderBottom: trigger ? "none" : "1px solid",
-          borderColor: "grey.100",
-          transition: "box-shadow 0.3s ease",
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters sx={{ height: { xs: 68, md: 80 }, gap: 2 }}>
+      {/* Main dark navy header */}
+      <div style={{ background: NAVY2 }}>
+        <div style={{
+          maxWidth: 1600, margin: "0 auto", padding: "0 28px",
+          display: "flex", alignItems: "center", height: 88, gap: 24,
+        }}>
+          {/* Logo */}
+          <a href="/" style={{ flexShrink: 0 }}>
+            <img src="/assets/logo.svg" alt="Mega Turbo" style={{ height: 30, width: "auto", display: "block" }} />
+          </a>
 
-            {/* Logo */}
-            <Box component="a" href="#" sx={{ display: "flex", alignItems: "center", mr: 3, flexShrink: 0 }}>
-              <Box component="img" src="/logo.png" alt="Auto Diesels" sx={{ height: { xs: 52, md: 64 }, width: "auto" }} />
-            </Box>
+          {/* Search bar — WIDER */}
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            style={{ flex: 1, display: "flex", minWidth: 0 }}
+            className="hide-md"
+          >
+            <input
+              type="text"
+              placeholder="Entrez une référence (ex : 1212221), un type de produits (turbo, injecteur...)"
+              style={{
+                flex: 1,
+                width: "100%",
+                padding: "12px 20px",
+                border: "none",
+                borderRadius: "4px 0 0 4px",
+                fontSize: "0.88rem",
+                outline: "none",
+                color: NAVY,
+                background: "#fff",
+                fontFamily: "inherit",
+                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)",
+              }}
+            />
+            <button type="submit" style={{
+              background: ORANGE, border: "none", padding: "0 22px", cursor: "pointer",
+              borderRadius: "0 4px 4px 0", color: "#fff", display: "flex", alignItems: "center",
+              transition: "background 0.2s",
+            }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#c43d1e")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = ORANGE)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.42 19.311" width="18" height="18">
+                <path d="m20.089 17.568-4.69-4.223a.979.979 0 0 0-.405-.21A8.282 8.282 0 1 0 2.74 14.437a8.282 8.282 0 0 0 11.069.012c.055.14.132.273.252.381l4.69 4.223a1 1 0 0 0 1.338-1.486zM4.079 12.95a6.283 6.283 0 0 1-.466-8.873 6.29 6.29 0 0 1 8.873-.465 6.283 6.283 0 0 1-8.408 9.338z" fill="#fff" />
+              </svg>
+            </button>
+          </form>
 
-            {/* Desktop nav */}
-            <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center", gap: 0.5, flexGrow: 1 }}>
-              {navLinks.map((link) =>
-                link.items ? (
-                  <Box key={link.name}>
-                    <Button
-                      onClick={(e) => openMenu(e, link.name)}
-                      endIcon={<KeyboardArrowDownIcon sx={{ fontSize: "1rem !important", transition: "transform 0.2s", transform: anchorEls[link.name] ? "rotate(180deg)" : "none" }} />}
-                      sx={{ color: "text.primary", fontWeight: 600, fontSize: "0.875rem", px: 1.5, "&:hover": { bgcolor: "grey.50", color: "primary.main" } }}
-                    >
-                      {link.name}
-                    </Button>
-                    <Menu
-                      anchorEl={anchorEls[link.name]}
-                      open={Boolean(anchorEls[link.name])}
-                      onClose={() => closeMenu(link.name)}
-                      slotProps={{ paper: { elevation: 8, sx: { borderRadius: 3, mt: 1, minWidth: 200, border: "1px solid", borderColor: "grey.100", "& .MuiMenuItem-root": { fontSize: "0.875rem", py: 1.25, "&:hover": { bgcolor: "#f0fdf4", color: "primary.main" } } } } }}
-                    >
-                      {link.items.map((item) => (
-                        <MenuItem key={item} onClick={() => closeMenu(link.name)} component="a" href="#products">{item}</MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                ) : (
-                  <Button key={link.name} href={link.href} sx={{ color: "text.primary", fontWeight: 600, fontSize: "0.875rem", px: 1.5, "&:hover": { bgcolor: "grey.50", color: "primary.main" } }}>
-                    {link.name}
-                  </Button>
-                )
-              )}
-            </Box>
+          {/* Right cluster */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginLeft: "auto", flexShrink: 0 }}>
+            {/* Phone */}
+            <div className="hide-md" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <img src="/assets/tel-header.svg" alt="" style={{ width: 32, height: 32, filter: "brightness(0) invert(1)" }} />
+              <div style={{ fontSize: "0.74rem", color: "#fff", lineHeight: 1.2 }}>
+                Besoin d'aide ?
+                <a href="tel:03 74 47 15 91" style={{
+                  display: "block", color: ORANGE, fontWeight: 800, fontSize: "1rem",
+                  fontFamily: "var(--font-heading)",
+                }}>03 74 47 15 91</a>
+              </div>
+            </div>
 
-            {/* Right actions */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: "auto" }}>
-              <IconButton sx={{ color: "text.secondary", display: { xs: "none", sm: "flex" } }}>
-                <SearchIcon />
-              </IconButton>
+            {/* Login */}
+            <a href="#" className="hide-sm" style={{
+              display: "flex", alignItems: "center", gap: 8, color: "#fff",
+              fontSize: "0.88rem", fontWeight: 600,
+            }}>
+              <img src="/assets/login.svg" alt="" style={{ width: 26, height: 26, filter: "none" }} />
+              <span>Connexion</span>
+            </a>
 
-              <Button
-                variant="contained"
-                href="#products"
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  bgcolor: "primary.main",
-                  fontWeight: 700,
-                  px: 2.5,
-                  "&:hover": { bgcolor: "primary.dark" },
+            {/* Cart */}
+            <a href="#" style={{ display: "flex", alignItems: "center", gap: 10, color: "#fff" }}>
+              <div style={{ position: "relative" }}>
+                <img src="/assets/panier.svg" alt="Panier" style={{ width: 32, height: 32, filter: "none" }} />
+                <span style={{
+                  position: "absolute", top: -4, right: -8, background: ORANGE, color: "#fff",
+                  borderRadius: "50%", width: 18, height: 18, fontSize: "0.65rem",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800,
+                  border: `2px solid ${NAVY}`,
+                }}>0</span>
+              </div>
+              <span className="hide-sm" style={{ fontSize: "0.88rem", fontWeight: 600 }}>Panier</span>
+            </a>
+
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="show-mobile"
+              style={{
+                background: "none", border: "none", cursor: "pointer", padding: 4,
+                display: "none",
+              }}
+              aria-label="Menu"
+            >
+              <img src="/assets/menu.svg" alt="Menu" style={{ width: 28, height: 28, filter: "brightness(0) invert(1)" }} />
+            </button>
+          </div>
+        </div>
+
+        {/* Nav strip */}
+        <nav style={{ background: NAVY2, borderTop: "1px solid rgba(255,255,255,0.06)" }} className="hide-mobile">
+          <div style={{
+            maxWidth: 1600, margin: "0 auto", padding: "0 28px",
+            display: "flex", gap: 0,
+          }}>
+            {navItems.map((item) => (
+              <a
+                key={item}
+                href="#"
+                style={{
+                  color: "#fff", padding: "16px 22px",
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 600, fontSize: "0.95rem", whiteSpace: "nowrap",
+                  borderBottom: "3px solid transparent",
+                  marginBottom: -1, transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderBottomColor = ORANGE;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent";
                 }}
               >
-                Nos pièces
-              </Button>
+                {item}
+              </a>
+            ))}
+          </div>
+        </nav>
 
-              <IconButton sx={{ position: "relative", color: "text.secondary" }}>
-                <ShoppingCartOutlinedIcon />
-                <Box sx={{ position: "absolute", top: 4, right: 4, width: 10, height: 10, bgcolor: "primary.main", borderRadius: "50%", border: "2px solid white" }} />
-              </IconButton>
+        {mobileOpen && (
+          <div style={{ background: NAVY2, padding: "8px 24px" }}>
+            {navItems.map((item) => (
+              <a key={item} href="#" style={{
+                display: "block", color: "#fff", padding: "14px 0",
+                fontFamily: "var(--font-heading)", fontWeight: 600, fontSize: "0.95rem",
+                borderBottom: "1px solid rgba(255,255,255,0.08)",
+              }}>{item}</a>
+            ))}
+          </div>
+        )}
+      </div>
 
-              <IconButton sx={{ display: { lg: "none" }, color: "text.primary" }} onClick={() => setDrawerOpen(true)}>
-                <MenuIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-
-      {/* Mobile drawer */}
-      <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}
-        slotProps={{ paper: { sx: { width: 300, pt: 2 } } }}
-      >
-        <Box sx={{ px: 2, mb: 2 }}>
-          <Box component="img" src="/logo.png" alt="Auto Diesels" sx={{ height: 48, width: "auto" }} />
-        </Box>
-        <List>
-          {navLinks.map((link) => (
-            <ListItem key={link.name} disablePadding>
-              <ListItemButton component="a" href={link.href} onClick={() => setDrawerOpen(false)}
-                sx={{ borderRadius: 2, mx: 1, "&:hover": { bgcolor: "primary.50", color: "primary.main" } }}
-              >
-                <ListItemText primary={link.name} slotProps={{ primary: { sx: { fontWeight: 600 } } }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Box sx={{ px: 3, mt: 2 }}>
-          <Button variant="contained" fullWidth href="#products" onClick={() => setDrawerOpen(false)} sx={{ fontWeight: 700 }}>
-            Voir nos pièces
-          </Button>
-        </Box>
-      </Drawer>
-    </>
+      <style jsx>{`
+        @media (max-width: 980px) {
+          .hide-mobile { display: none !important; }
+          .show-mobile { display: flex !important; }
+        }
+        @media (max-width: 820px) { .hide-md { display: none !important; } }
+        @media (max-width: 540px) { .hide-sm { display: none !important; } }
+      `}</style>
+    </header>
   );
 }
