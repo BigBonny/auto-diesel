@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const TEAL = "#1a5460";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 const NAVY = "#274554";
 
 const reviews = [

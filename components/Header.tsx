@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const NAVY   = "#274554";
 const NAVY2  = "#1f3a47";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 
 const navItems = [
   "Turbo", "Injecteur", "Pompe HP à Injection", "Huiles et additifs", "Fabricants", "Blog", "Contact",
@@ -32,7 +32,7 @@ export default function Header() {
         }}>
           {/* Logo */}
           <a href="/" style={{ flexShrink: 0 }}>
-            <img src="/assets/Logo.png" alt="Auto Diesel" style={{ height: 56, width: "auto", display: "block" }} />
+            <img src="/assets/LogoLong.png" alt="Auto Diesel" style={{ height: 140, width: "auto", display: "block" }} />
           </a>
 
           {/* Search bar — WIDER */}
@@ -91,14 +91,14 @@ export default function Header() {
               display: "flex", alignItems: "center", gap: 8, color: "#fff",
               fontSize: "0.88rem", fontWeight: 600,
             }}>
-              <img src="/assets/login.svg" alt="" style={{ width: 26, height: 26, filter: "none" }} />
+              <img src="/assets/login.svg" alt="" style={{ width: 26, height: 26, filter: "brightness(0) saturate(100%) invert(77%) sepia(27%) saturate(622%) hue-rotate(47deg) brightness(92%) contrast(89%)" }} />
               <span>Connexion</span>
             </a>
 
             {/* Cart */}
             <a href="#" style={{ display: "flex", alignItems: "center", gap: 10, color: "#fff" }}>
               <div style={{ position: "relative" }}>
-                <img src="/assets/panier.svg" alt="Panier" style={{ width: 32, height: 32, filter: "none" }} />
+                <img src="/assets/panier.svg" alt="Panier" style={{ width: 32, height: 32 }} />
                 <span style={{
                   position: "absolute", top: -4, right: -8, background: ORANGE, color: "#fff",
                   borderRadius: "50%", width: 18, height: 18, fontSize: "0.65rem",

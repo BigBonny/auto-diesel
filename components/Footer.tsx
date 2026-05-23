@@ -2,7 +2,7 @@
 
 const NAVY   = "#274554";
 const NAVY2  = "#1f3a47";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 
 const reassuranceItems = [
   { icon: "/assets/livraison.svg",          title: "Livraison",  highlight: "GRATUITE",   sub: "24h à 48h" },
@@ -77,7 +77,7 @@ export default function Footer() {
       <section style={{ padding: "48px 24px 36px" }}>
         <div style={{ maxWidth: 1600, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 44 }}>
-            <img src="/assets/LogoLong.png" alt="Auto Diesel" style={{ height: 120, width: "auto", display: "inline-block" }} />
+            <img src="/assets/LogoLong.png" alt="Auto Diesel" style={{ height: 320, width: "auto", display: "inline-block" }} />
           </div>
 
           <div className="footer-cols" style={{

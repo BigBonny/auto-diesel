@@ -1,5 +1,5 @@
 ﻿const NAVY   = "#274554";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 
 const items = [
   { icon: "/assets/livraison.svg",          title: "Livraison",  highlight: "GRATUITE",   sub: "24h à 48h" },

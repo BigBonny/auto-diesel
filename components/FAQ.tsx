@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const NAVY = "#274554";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 
 const questions = [
   { q: "Qu'est-ce qu'une pièce en échange standard ?",

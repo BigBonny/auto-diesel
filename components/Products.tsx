@@ -2,7 +2,7 @@
 
 
 const NAVY   = "#274554";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 const GREEN  = "#86C82F";
 
 type Product = {
@@ -66,7 +66,7 @@ function ProductCard({ p }: { p: Product }) {
         width: 73, height: 73, color: "#fff", textAlign: "center",
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 20, fontWeight: 700,
-        background: "radial-gradient(circle, #ff5700 0%, #ff5700 55%, transparent 55%)",
+        background: "radial-gradient(circle, #93c572 0%, #93c572 55%, transparent 55%)",
       }}>
         -{discount}%
       </div>
@@ -101,16 +101,16 @@ function ProductCard({ p }: { p: Product }) {
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             gap: 16, padding: "11px 25px", borderRadius: 999,
             fontSize: "1.25rem", fontWeight: 700, lineHeight: 1.5,
-            color: "#fff", backgroundColor: ORANGE, border: "1px solid #ff5700",
+            color: "#fff", backgroundColor: ORANGE, border: "1px solid #93c572",
             cursor: "pointer", textTransform: "uppercase", fontFamily: "inherit",
             transition: "background .2s, color .2s",
           }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgb(217,74,0)")}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#7aa55e")}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = ORANGE)}
           >
             <span className="label">Ajouter au panier</span>
             <span className="icon">
-              <img src="/assets/icon-cart.svg" alt="" style={{ width: 20, height: 20, filter: "brightness(0) invert(1)", display: "block" }} />
+              <img src="/assets/icon-cart.svg" alt="" style={{ width: 20, height: 20, display: "block" }} />
             </span>
           </button>
         </div>

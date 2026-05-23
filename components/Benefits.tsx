@@ -1,7 +1,7 @@
 ﻿"use client";
 
 const NAVY   = "#274554";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 
 const benefits = [
   {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const NAVY   = "#274554";
-const ORANGE = "#ff5700";
+const ORANGE = "#93c572";
 const WHITE  = "#f4f6f8";
 
 const marques = ["Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Mercedes", "Opel", "Peugeot", "Renault", "Toyota", "Volkswagen", "Volvo"];
@@ -18,7 +18,7 @@ export default function Hero() {
         id="accordions"
         style={{
           position: "relative",
-          backgroundImage: "url(/assets/Herobg.jpeg)",
+          backgroundImage: "url(/assets/Herobg.png)",
           backgroundSize: "cover",
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
@@ -29,9 +29,16 @@ export default function Hero() {
           overflow: "hidden",
         }}
       >
+        {/* Dark overlay to tone down the background image */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(180deg, rgba(31,58,71,0.55) 0%, rgba(31,58,71,0.35) 100%)",
+          zIndex: 0,
+        }} />
+
         <div style={{
           maxWidth: 1600, margin: "15px auto", padding: "0 28px",
-          position: "relative",
+          position: "relative", zIndex: 1,
         }}>
           {/* .top-search — display:flex, align-items:center, margin-top:60px */}
           <div className="top-search" style={{
