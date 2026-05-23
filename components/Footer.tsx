@@ -77,7 +77,7 @@ export default function Footer() {
       <section style={{ padding: "48px 24px 36px" }}>
         <div style={{ maxWidth: 1600, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 44 }}>
-            <img src="/assets/logo_footer.svg" alt="Auto Diesel" style={{ height: 50, width: "auto", display: "inline-block" }} />
+            <img src="/assets/LogoLong.png" alt="Auto Diesel" style={{ height: 120, width: "auto", display: "inline-block" }} />
           </div>
 
           <div className="footer-cols" style={{

@@ -18,7 +18,7 @@ export default function Hero() {
         id="accordions"
         style={{
           position: "relative",
-          backgroundImage: "url(/assets/cover-search.png)",
+          backgroundImage: "url(/assets/Herobg.jpeg)",
           backgroundSize: "cover",
           backgroundPosition: "center bottom",
           backgroundRepeat: "no-repeat",
@@ -26,6 +26,7 @@ export default function Hero() {
           minHeight: 560,
           paddingTop: 1,
           paddingBottom: 90,
+          overflow: "hidden",
         }}
       >
         <div style={{
@@ -89,8 +90,8 @@ export default function Hero() {
             alt=""
             className="hero-montage"
             style={{
-              position: "absolute", right: -170, top: 15, zIndex: 0,
-              maxWidth: 600, height: "auto", maxHeight: 500,
+              position: "absolute", right: -250, top: -30, zIndex: 0,
+              maxWidth: 850, height: "auto", maxHeight: 700,
               objectFit: "contain",
               filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.4))",
               pointerEvents: "none",

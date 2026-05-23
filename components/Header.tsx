@@ -32,7 +32,7 @@ export default function Header() {
         }}>
           {/* Logo */}
           <a href="/" style={{ flexShrink: 0 }}>
-            <img src="/assets/logo.svg" alt="Auto Diesel" style={{ height: 30, width: "auto", display: "block" }} />
+            <img src="/assets/Logo.png" alt="Auto Diesel" style={{ height: 56, width: "auto", display: "block" }} />
           </a>
 
           {/* Search bar — WIDER */}
