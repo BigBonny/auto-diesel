@@ -162,8 +162,8 @@ export default function Footer() {
 
             <li style={infoItemStyle}>
               <IconWrap><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1 1 0 00-1.02.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.58l2.2-2.21a1 1 0 00.25-1.02A11.36 11.36 0 018.5 4a1 1 0 00-1-1H4a1 1 0 00-1 1c0 9.39 7.61 17 17 17a1 1 0 001-1v-3.5a1 1 0 00-1-1z" /></svg></IconWrap>
-              <a href="tel:03 74 47 15 91" style={{ color: "#fff", fontWeight: 800, fontFamily: "var(--font-heading)" }}>
-                03 74 47 15 91
+              <a href="tel:+33 6 12 42 98 80" style={{ color: "#fff", fontWeight: 800, fontFamily: "var(--font-heading)" }}>
+                +33 6 12 42 98 80
               </a>
             </li>
 

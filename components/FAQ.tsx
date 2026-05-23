@@ -13,7 +13,7 @@ const questions = [
   { q: "Les pièces proposées sont-elles neuves ou reconditionnées ?",
     a: "Nous proposons les deux : des pièces neuves d'origine constructeur, et des pièces reconditionnées en échange standard, toutes contrôlées et garanties." },
   { q: "Comment savoir si une pièce est compatible avec mon véhicule ?",
-    a: "Utilisez notre outil de recherche par plaque d'immatriculation ou par véhicule (marque, modèle, motorisation). Notre service technique reste disponible pour toute vérification au 03 74 47 15 91." },
+    a: "Utilisez notre outil de recherche par plaque d'immatriculation ou par véhicule (marque, modèle, motorisation). Notre service technique reste disponible pour toute vérification au +33 6 12 42 98 80." },
 ];
 
 export default function FAQ() {

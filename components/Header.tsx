@@ -79,10 +79,10 @@ export default function Header() {
               <img src="/assets/tel-header.svg" alt="" style={{ width: 32, height: 32, filter: "brightness(0) invert(1)" }} />
               <div style={{ fontSize: "0.74rem", color: "#fff", lineHeight: 1.2 }}>
                 Besoin d'aide ?
-                <a href="tel:03 74 47 15 91" style={{
+                <a href="tel:+33 6 12 42 98 80" style={{
                   display: "block", color: ORANGE, fontWeight: 800, fontSize: "1rem",
                   fontFamily: "var(--font-heading)",
-                }}>03 74 47 15 91</a>
+                }}>+33 6 12 42 98 80</a>
               </div>
             </div>
 
