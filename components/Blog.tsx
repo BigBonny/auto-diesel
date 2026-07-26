@@ -25,7 +25,7 @@ const posts = [
 
 export default function Blog() {
   return (
-    <section style={{ background: "#f4f6f8", padding: "64px 0" }}>
+    <section id="blog" style={{ background: "#f4f6f8", padding: "64px 0" }}>
       <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
         <div style={{ textAlign: "center", marginBottom: 44 }}>
           <div style={{

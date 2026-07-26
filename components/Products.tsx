@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { useStore } from "@/components/StoreProvider";
 
 const NAVY   = "#274554";
 const ORANGE = "#93c572";
@@ -53,6 +54,7 @@ const injecteurs: Product[] = [
 ];
 
 function ProductCard({ p }: { p: Product }) {
+  const { addToCart } = useStore();
   const discount = Math.round((1 - p.price / p.original) * 100);
   return (
     <div className="product-card" style={{
@@ -105,6 +107,7 @@ function ProductCard({ p }: { p: Product }) {
             cursor: "pointer", textTransform: "uppercase", fontFamily: "inherit",
             transition: "background .2s, color .2s",
           }}
+            onClick={() => addToCart({ id: p.id, name: p.name, price: p.price, img: p.img })}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#7aa55e")}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = ORANGE)}
           >
@@ -182,9 +185,9 @@ const arrowStyle = (side: "left" | "right"): React.CSSProperties => ({
 
 export default function Products() {
   return (
-    <>
+    <div id="products">
       {/* Turbos */}
-      <section id="products" style={{ background: "#f4f6f8", padding: "32px 0 32px" }}>
+      <section id="turbos" style={{ background: "#f4f6f8", padding: "32px 0 32px" }}>
         <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
           <p style={{
             fontFamily: "var(--font-heading)",
@@ -199,7 +202,7 @@ export default function Products() {
       </section>
 
       {/* Injecteurs */}
-      <section style={{ background: "#f4f6f8", padding: "16px 0 56px" }}>
+      <section id="injecteurs" style={{ background: "#f4f6f8", padding: "16px 0 56px" }}>
         <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
           <p style={{
             fontFamily: "var(--font-heading)",
@@ -217,6 +220,6 @@ export default function Products() {
         #turbos-slider::-webkit-scrollbar,
         #injecteurs-slider::-webkit-scrollbar { display: none; }
       `}</style>
-    </>
+    </div>
   );
 }

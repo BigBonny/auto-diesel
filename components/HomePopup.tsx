@@ -61,7 +61,7 @@ export default function HomePopup() {
 
         {/* Popup image */}
         <img
-          src="/assets/popup-image-69f1b10b4edcd0.56332886.jpg"
+          src="/assets/popup-image-69f1b10b4edcd0.56332886.png"
           alt="Popup"
           style={{
             maxWidth: "100%",

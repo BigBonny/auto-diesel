@@ -14,7 +14,7 @@ const brands = [
 
 export default function TopMarques() {
   return (
-    <section style={{ background: NAVY, padding: "48px 0" }}>
+    <section id="manufacturers" style={{ background: NAVY, padding: "48px 0" }}>
       <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
         <h2 style={{
           fontFamily: "var(--font-heading)",

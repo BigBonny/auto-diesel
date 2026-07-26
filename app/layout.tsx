@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { Open_Sans, Montserrat } from "next/font/google";
+import StoreProvider from "@/components/StoreProvider";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import "./globals.css";
 
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fr" className={`${openSans.variable} ${montserrat.variable}`}>
       <body className={openSans.className}>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <ThemeRegistry><StoreProvider>{children}</StoreProvider></ThemeRegistry>
       </body>
     </html>
   );

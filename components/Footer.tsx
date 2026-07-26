@@ -38,7 +38,7 @@ const linkStyle: React.CSSProperties = {
 
 export default function Footer() {
   return (
-    <footer style={{ background: NAVY2, color: "#fff" }}>
+    <footer id="contact" style={{ background: NAVY2, color: "#fff" }}>
 
       {/* Reassurance band */}
       <section style={{ background: NAVY, padding: "26px 16px" }}>

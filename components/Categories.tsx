@@ -4,14 +4,14 @@ const NAVY   = "#274554";
 const ORANGE = "#93c572";
 
 const cats = [
-  { title: "TURBOS",     count: "180 000 produits", img: "/assets/category_1.png", href: "#" },
-  { title: "INJECTEURS", count: "210 000 produits", img: "/assets/category_2.png", href: "#" },
-  { title: "POMPES HP",  count: "160 000 produits", img: "/assets/category_3.png", href: "#" },
+  { title: "TURBOS",     count: "180 000 produits", img: "/assets/category_1.png", href: "/catalogue/turbos" },
+  { title: "INJECTEURS", count: "210 000 produits", img: "/assets/category_2.png", href: "/catalogue/injecteurs" },
+  { title: "POMPES HP",  count: "160 000 produits", img: "/assets/category_3.png", href: "/catalogue/pompes-hp" },
 ];
 
 export default function Categories() {
   return (
-    <section style={{ background: "#f4f6f8", padding: "60px 0 10px", marginBottom: 50 }}>
+    <section id="catalogue" style={{ background: "#f4f6f8", padding: "60px 0 10px", marginBottom: 50 }}>
       <div style={{ maxWidth: 1600, margin: "0 auto", padding: "0 24px" }}>
         <h2 style={{
           fontFamily: "var(--font-heading)",
